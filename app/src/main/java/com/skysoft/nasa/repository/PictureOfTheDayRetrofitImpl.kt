@@ -5,6 +5,6 @@ import com.skysoft.nasa.utils.App
 class PictureOfTheDayRetrofitImpl {
 
     fun getRetrofitImpl(): PictureOfTheDayAPI? {
-        return App().getRetrofit()
+        return App().getRetrofitPictureOfTheDayAPI()
     }
 }

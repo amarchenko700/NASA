@@ -4,8 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.skysoft.nasa.BuildConfig
+import com.skysoft.nasa.R
+import com.skysoft.nasa.repository.PDOError
 import com.skysoft.nasa.repository.PDOServerResponse
+import com.skysoft.nasa.repository.PictureOfTheDayAPI
 import com.skysoft.nasa.utils.App
+import com.skysoft.nasa.utils.hasInternet
 import com.skysoft.nasa.view.PictureOfTheDayAppState
 import retrofit2.Call
 import retrofit2.Callback
@@ -14,29 +18,38 @@ import retrofit2.Response
 class PictureOfTheDayViewModel(
     private val liveAppState: MutableLiveData<PictureOfTheDayAppState> = MutableLiveData()
 ) : ViewModel() {
+
     fun getData(): LiveData<PictureOfTheDayAppState> {
         return liveAppState
     }
 
-    fun sendRequest() {
+    private fun sendRequestToNasa() {
         liveAppState.postValue(PictureOfTheDayAppState.Loading(null))
         App().getRetrofit()?.let {
-            it.getPictureOfTheDay(BuildConfig.NASA_API_KEY).enqueue(
+            val apodResponse = it.create(PictureOfTheDayAPI::class.java)
+            apodResponse.getPictureOfTheDay(BuildConfig.NASA_API_KEY).enqueue(
                 object : Callback<PDOServerResponse> {
                     override fun onResponse(
                         call: Call<PDOServerResponse>,
                         response: Response<PDOServerResponse>
                     ) {
+                        val errorConverter = it.responseBodyConverter<PDOError>(
+                            PDOError::class.java, arrayOfNulls(0)
+                        )
+                        val pdoError = errorConverter.convert(response.errorBody())
+
                         if (response.isSuccessful && response.body() != null) {
                             response.body()?.let {
                                 liveAppState.postValue(PictureOfTheDayAppState.Success(it))
                             }
                         } else {
-                            liveAppState.postValue(
-                                PictureOfTheDayAppState.Error(
-                                    response.errorBody().toString()
+                            pdoError?.let {
+                                liveAppState.postValue(
+                                    PictureOfTheDayAppState.Error(
+                                        pdoError.error.message
+                                    )
                                 )
-                            )
+                            }
                         }
                     }
 
@@ -45,6 +58,14 @@ class PictureOfTheDayViewModel(
                     }
                 }
             )
+        }
+    }
+
+    fun sendRequest() {
+        if (hasInternet()) {
+            sendRequestToNasa()
+        } else {
+            liveAppState.postValue(PictureOfTheDayAppState.Error(App.getStringFromResources(R.string.not_availability_of_the_internet)))
         }
     }
 }

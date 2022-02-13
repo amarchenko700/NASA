@@ -17,9 +17,13 @@ class App : Application() {
                 GsonBuilder().setLenient().create()
             )
         )
-        .build().create(PictureOfTheDayAPI::class.java)
+        .build()
 
-    fun getRetrofit(): PictureOfTheDayAPI? {
+    fun getRetrofitPictureOfTheDayAPI(): PictureOfTheDayAPI? {
+        return getRetrofit().create(PictureOfTheDayAPI::class.java)
+    }
+
+    fun getRetrofit(): Retrofit {
         return retrofit
     }
 
@@ -39,6 +43,6 @@ class App : Application() {
             return appContext
         }
 
-
+        fun getStringFromResources(idString: Int) = appContext.getString(idString)
     }
 }

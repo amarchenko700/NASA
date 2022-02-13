@@ -25,29 +25,47 @@ class APODFragment : BaseFragment<FragmentApodBinding>(FragmentApodBinding::infl
         viewModel.sendRequest()
     }
 
+    private fun setVisibility(isError: Boolean, isLoading: Boolean, isSuccess: Boolean) {
+        binding.let {
+            setVisibilityForLayout(isError, it.unavailableServer)
+            setVisibilityForLayout(isLoading, it.loadingLayout)
+            setVisibilityForLayout(isSuccess, it.serverData)
+        }
+    }
+
+    private fun setVisibilityForLayout(visibility: Boolean, layout: View) {
+        if (visibility) {
+            layout.visibility = View.VISIBLE
+        } else {
+            layout.visibility = View.GONE
+        }
+    }
+
+    private fun showError(error: String) {
+        binding.let {
+            setVisibility(true, false, false)
+            it.tvDesriptionError.setText(error)
+            it.root.snackbarWithAction(
+                getString(R.string.Error), getString(R.string.try_again), {
+                    viewModel.sendRequest()
+                }
+            )
+        }
+    }
+
     private fun renderData(pictureOfTheDayAppState: PictureOfTheDayAppState) {
         when (pictureOfTheDayAppState) {
             is PictureOfTheDayAppState.Error -> {
                 binding.run {
-                    unavailableServer.visibility = View.VISIBLE
-                    loadingLayout.visibility = View.GONE
-                    tvDesriptionError.text = pictureOfTheDayAppState.error
-                    root.snackbarWithAction(
-                        getString(R.string.Error), getString(R.string.TryAgain), {
-                            viewModel.sendRequest()
-                        }
-                    )
+                    showError(pictureOfTheDayAppState.error)
                 }
             }
             is PictureOfTheDayAppState.Loading -> {
-                binding.let {
-                    it.unavailableServer.visibility = View.GONE
-                    it.loadingLayout.visibility = View.VISIBLE
-                }
+                setVisibility(false, true, false)
             }
             is PictureOfTheDayAppState.Success -> {
                 binding.let {
-                    it.unavailableServer.visibility = View.GONE
+                    setVisibility(false, false, true)
                     it.imageView.load(pictureOfTheDayAppState.serverResponse.url) {
                         placeholder(R.drawable.ic_no_photo_vector)
                     }

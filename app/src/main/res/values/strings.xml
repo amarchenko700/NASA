@@ -10,6 +10,8 @@
 
     <string name="unavailable_server">Ошибка загрузки данных</string>
     <string name="image_content_description">Картинка погоды</string>
-    <string name="TryAgain">Попробовать еще раз</string>
+    <string name="try_again">Попробовать еще раз</string>
     <string name="Error">Error</string>
+    <string name="availability_of_the_internet">Появился интернет!</string>
+    <string name="not_availability_of_the_internet">Интернета нет!</string>
 </resources>

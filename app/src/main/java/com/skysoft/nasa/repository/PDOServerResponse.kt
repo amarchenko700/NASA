@@ -1,6 +1,7 @@
 package com.skysoft.nasa.repository
 
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 
 data class PDOServerResponse(
     val copyright: String,
@@ -13,4 +14,15 @@ data class PDOServerResponse(
     val serviceVersion: String,
     val title: String,
     val url: String
+)
+
+@Serializable
+data class PDOError(
+    val error: PDOErrorDetail
+)
+
+@Serializable
+data class PDOErrorDetail(
+    val code: String,
+    val message: String
 )
