@@ -33,16 +33,16 @@ class PictureOfTheDayViewModel(
                         call: Call<PDOServerResponse>,
                         response: Response<PDOServerResponse>
                     ) {
-                        val errorConverter = it.responseBodyConverter<PDOError>(
-                            PDOError::class.java, arrayOfNulls(0)
-                        )
-                        val pdoError = errorConverter.convert(response.errorBody())
 
                         if (response.isSuccessful && response.body() != null) {
                             response.body()?.let {
                                 liveAppState.postValue(PictureOfTheDayAppState.Success(it))
                             }
                         } else {
+                            val errorConverter = it.responseBodyConverter<PDOError>(
+                                PDOError::class.java, arrayOfNulls(0)
+                            )
+                            val pdoError = errorConverter.convert(response.errorBody())
                             pdoError?.let {
                                 liveAppState.postValue(
                                     PictureOfTheDayAppState.Error(

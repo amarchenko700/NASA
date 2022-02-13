@@ -2,4 +2,11 @@
 <resources>
     <dimen name="unavailable_server_text_size">25sp</dimen>
     <dimen name="unavailable_server_texterror_size">20sp</dimen>
+    <dimen name="padding_constraint_layout_server_data">10dp</dimen>
+    <dimen name="layout_width_bottom_sheet_line">25dp</dimen>
+    <dimen name="layout_height_bottom_sheet_line">1dp</dimen>
+    <dimen name="layout_marginTop_bottom_sheet_line">5dp</dimen>
+    <dimen name="layout_marginTop_bottom_sheet_description_header">5dp</dimen>
+    <dimen name="paddingStart_bottom_sheet">10dp</dimen>
+    <dimen name="paddingEnd_bottom_sheet">10dp</dimen>
 </resources>

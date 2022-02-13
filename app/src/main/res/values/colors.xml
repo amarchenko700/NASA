@@ -19,4 +19,8 @@
     <color name="red_900">#AE0B0B</color>
 
     <color name="background_splashscreen_bottom">#78DAFD</color>
+    <color name="background_bottom_sheet_container">#f6f6fa</color>
+    <color name="background_bottom_sheet_line">#663b4351</color>
+    <color name="textColor_bottom_sheet_description_header">#000</color>
+
 </resources>
