@@ -4,7 +4,11 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -14,6 +18,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.skysoft.nasa.R
 import com.skysoft.nasa.databinding.FragmentApodBinding
 import com.skysoft.nasa.view.BaseFragment
+import com.skysoft.nasa.view.MainActivity
 import com.skysoft.nasa.view.PictureOfTheDayAppState
 
 class APODFragment : BaseFragment<FragmentApodBinding>(FragmentApodBinding::inflate) {
@@ -57,6 +62,29 @@ class APODFragment : BaseFragment<FragmentApodBinding>(FragmentApodBinding::infl
             }
 
         })
+
+        (requireActivity() as MainActivity).setSupportActionBar(binding.bottomAppBar)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_bottom_bar, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.appBarFAV -> {
+                Toast.makeText(requireContext(), "app_bar_fav", Toast.LENGTH_SHORT).show()
+            }
+            R.id.appBarSettings -> {
+                //requireActivity().supportFragmentManager.beginTransaction().replace(R.id.container,ChipsFragment.newInstance()).commit()
+            }
+            android.R.id.home -> {
+                //BottomNavigationDrawerFragment().show(requireActivity().supportFragmentManager,"ff")
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun setVisibility(isError: Boolean, isLoading: Boolean, isSuccess: Boolean) {
