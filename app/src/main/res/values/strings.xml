@@ -14,4 +14,9 @@
     <string name="Error">Error</string>
     <string name="availability_of_the_internet">Появился интернет!</string>
     <string name="not_availability_of_the_internet">Интернета нет!</string>
+    <string name="text_chip_default">default</string>
+    <string name="text_chip_entry">entry</string>
+    <string name="text_chip_choice">Choice</string>
+    <string name="text_chip_action">Action</string>
+    <string name="text_chip_filter">Filter</string>
 </resources>

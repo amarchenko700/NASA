@@ -10,9 +10,11 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import coil.load
+import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
 import com.skysoft.nasa.R
@@ -20,6 +22,7 @@ import com.skysoft.nasa.databinding.FragmentApodBinding
 import com.skysoft.nasa.view.BaseFragment
 import com.skysoft.nasa.view.MainActivity
 import com.skysoft.nasa.view.PictureOfTheDayAppState
+import com.skysoft.nasa.view.chips.ChipsFragment
 
 class APODFragment : BaseFragment<FragmentApodBinding>(FragmentApodBinding::inflate) {
 
@@ -27,6 +30,7 @@ class APODFragment : BaseFragment<FragmentApodBinding>(FragmentApodBinding::infl
     private val viewModel: PictureOfTheDayViewModel by lazy {
         ViewModelProvider(this).get(PictureOfTheDayViewModel::class.java)
     }
+    var isMain = true
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -65,6 +69,26 @@ class APODFragment : BaseFragment<FragmentApodBinding>(FragmentApodBinding::infl
 
         (requireActivity() as MainActivity).setSupportActionBar(binding.bottomAppBar)
         setHasOptionsMenu(true)
+
+        binding.let { b ->
+            b.fab.setOnClickListener {
+                if (isMain) {
+                    b.bottomAppBar.navigationIcon = null
+                    b.bottomAppBar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_END
+                    b.fab.setImageResource(R.drawable.ic_back_fab)
+                    b.bottomAppBar.replaceMenu(R.menu.menu_bottom_bar_other_screen)
+                } else {
+                    b.bottomAppBar.navigationIcon = ContextCompat.getDrawable(
+                        requireContext(),
+                        R.drawable.ic_hamburger_menu_bottom_bar
+                    )
+                    b.bottomAppBar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
+                    b.fab.setImageResource(R.drawable.ic_plus_fab)
+                    b.bottomAppBar.replaceMenu(R.menu.menu_bottom_bar)
+                }
+                isMain = !isMain
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -78,7 +102,11 @@ class APODFragment : BaseFragment<FragmentApodBinding>(FragmentApodBinding::infl
                 Toast.makeText(requireContext(), "appBarFAV", Toast.LENGTH_SHORT).show()
             }
             R.id.appBarSettings -> {
-                Toast.makeText(requireContext(), "appBarSettings", Toast.LENGTH_SHORT).show()
+                requireActivity().supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, ChipsFragment.newInstance())
+                    .addToBackStack(null)
+                    .commit()
             }
             android.R.id.home -> {
                 BottomNavigationDrawerFragment().show(requireActivity().supportFragmentManager, "")
