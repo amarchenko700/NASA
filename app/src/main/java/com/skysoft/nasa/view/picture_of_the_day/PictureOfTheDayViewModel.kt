@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.skysoft.nasa.BuildConfig
 import com.skysoft.nasa.R
 import com.skysoft.nasa.repository.PDOError
+import com.skysoft.nasa.repository.PDOErrorDetail400
 import com.skysoft.nasa.repository.PDOServerResponse
 import com.skysoft.nasa.repository.PictureOfTheDayAPI
 import com.skysoft.nasa.utils.App
@@ -14,6 +15,7 @@ import com.skysoft.nasa.view.PictureOfTheDayAppState
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.Retrofit
 
 class PictureOfTheDayViewModel(
     private val liveAppState: MutableLiveData<PictureOfTheDayAppState> = MutableLiveData()
@@ -39,17 +41,11 @@ class PictureOfTheDayViewModel(
                                 liveAppState.postValue(PictureOfTheDayAppState.Success(it))
                             }
                         } else {
-                            val errorConverter = it.responseBodyConverter<PDOError>(
-                                PDOError::class.java, arrayOfNulls(0)
-                            )
-                            val pdoError = errorConverter.convert(response.errorBody())
-                            pdoError?.let {
-                                liveAppState.postValue(
-                                    PictureOfTheDayAppState.Error(
-                                        pdoError.error.message
-                                    )
+                            liveAppState.postValue(
+                                PictureOfTheDayAppState.Error(
+                                    getErrorMessage(response, it)
                                 )
-                            }
+                            )
                         }
                     }
 
@@ -59,6 +55,24 @@ class PictureOfTheDayViewModel(
                 }
             )
         }
+    }
+
+    private fun getErrorMessage(response: Response<PDOServerResponse>, retrofit: Retrofit): String {
+        var errorMessage = "НЛО: не опознная летающая ошибка с позывным код "
+        when(response.code()){
+            400->{val errorConverter = retrofit.responseBodyConverter<PDOErrorDetail400>(
+                PDOErrorDetail400::class.java, arrayOfNulls(0)
+            )
+                errorConverter.convert(response.errorBody())?.let {
+                    errorMessage = it.msg}}
+            403->{val errorConverter = retrofit.responseBodyConverter<PDOError>(
+                PDOError::class.java, arrayOfNulls(0)
+            )
+                errorConverter.convert(response.errorBody())?.let {
+                    errorMessage = it.error.message}
+                }
+        }
+        return errorMessage
     }
 
     fun sendRequest(dateRequest: String) {
