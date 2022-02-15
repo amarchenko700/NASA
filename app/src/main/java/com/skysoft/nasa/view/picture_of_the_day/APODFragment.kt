@@ -23,6 +23,8 @@ import com.skysoft.nasa.view.BaseFragment
 import com.skysoft.nasa.view.MainActivity
 import com.skysoft.nasa.view.PictureOfTheDayAppState
 import com.skysoft.nasa.view.chips.ChipsFragment
+import java.text.SimpleDateFormat
+import java.util.*
 
 class APODFragment : BaseFragment<FragmentApodBinding>(FragmentApodBinding::inflate) {
 
@@ -37,39 +39,55 @@ class APODFragment : BaseFragment<FragmentApodBinding>(FragmentApodBinding::infl
         viewModel.getData().observe(viewLifecycleOwner, Observer {
             renderData(it)
         })
-        viewModel.sendRequest()
+        sendRequestAPOD()
+
         binding.inputLayout.setEndIconOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW).apply {
                 data =
                     Uri.parse("https://en.wikipedia.org/wiki/${binding.inputEditText.text.toString()}")
             })
         }
-
-        bottomSheetBehavior = BottomSheetBehavior.from(binding.included.bottomSheetContainer)
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-
-        bottomSheetBehavior.addBottomSheetCallback(object :
-            BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                when (newState) {
-                    /*BottomSheetBehavior.STATE_DRAGGING -> TODO("not implemented")
-                    BottomSheetBehavior.STATE_COLLAPSED -> TODO("not implemented")
-                    BottomSheetBehavior.STATE_EXPANDED -> TODO("not implemented")
-                    BottomSheetBehavior.STATE_HALF_EXPANDED -> TODO("not implemented")
-                    BottomSheetBehavior.STATE_HIDDEN -> TODO("not implemented")
-                    BottomSheetBehavior.STATE_SETTLING -> TODO("not implemented")*/
-                }
-            }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                Log.d("mylogs", "slideOffset $slideOffset")
-            }
-
-        })
+        initChipsAPOD()
+        initBottomSheetBehavior()
+        initFAB()
 
         (requireActivity() as MainActivity).setSupportActionBar(binding.bottomAppBar)
         setHasOptionsMenu(true)
+    }
 
+    private fun initChipsAPOD() {
+        binding.let {
+            it.chipToday.isChecked = true
+            it.chipToday.setOnClickListener { sendRequestAPOD() }
+            it.chipYesterday.setOnClickListener { sendRequestAPOD() }
+            it.chipDayBeforeYesterday.setOnClickListener { sendRequestAPOD() }
+        }
+    }
+
+    private fun sendRequestAPOD(){
+        with(binding){
+            when {
+                chipToday.isChecked -> {
+                    viewModel.sendRequest(getDateForRequestAPOD(0))
+                }
+                chipYesterday.isChecked -> {
+                    viewModel.sendRequest(getDateForRequestAPOD(-1))
+                }
+                chipDayBeforeYesterday.isChecked -> {
+                    viewModel.sendRequest(getDateForRequestAPOD(-2))
+                }
+            }
+        }
+    }
+
+    private fun getDateForRequestAPOD(dateShift: Int): String{
+        val calendar = Calendar.getInstance()
+        val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        calendar.add(Calendar.DATE, dateShift)
+        return formatter.format(calendar.time)
+    }
+
+    private fun initFAB() {
         binding.let { b ->
             b.fab.setOnClickListener {
                 if (isMain) {
@@ -89,6 +107,41 @@ class APODFragment : BaseFragment<FragmentApodBinding>(FragmentApodBinding::infl
                 isMain = !isMain
             }
         }
+    }
+
+    private fun initBottomSheetBehavior() {
+        bottomSheetBehavior = BottomSheetBehavior.from(binding.included.bottomSheetContainer)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+
+        bottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_DRAGGING ->
+                        Toast.makeText(requireContext(), "STATE_DRAGGING", Toast.LENGTH_SHORT)
+                            .show()
+                    BottomSheetBehavior.STATE_COLLAPSED ->
+                        Toast.makeText(requireContext(), "STATE_COLLAPSED", Toast.LENGTH_SHORT)
+                            .show()
+                    BottomSheetBehavior.STATE_EXPANDED ->
+                        Toast.makeText(requireContext(), "STATE_EXPANDED", Toast.LENGTH_SHORT)
+                            .show()
+                    BottomSheetBehavior.STATE_HALF_EXPANDED ->
+                        Toast.makeText(requireContext(), "STATE_HALF_EXPANDED", Toast.LENGTH_SHORT)
+                            .show()
+                    BottomSheetBehavior.STATE_HIDDEN ->
+                        Toast.makeText(requireContext(), "STATE_HIDDEN", Toast.LENGTH_SHORT).show()
+                    BottomSheetBehavior.STATE_SETTLING ->
+                        Toast.makeText(requireContext(), "STATE_SETTLING", Toast.LENGTH_SHORT)
+                            .show()
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                Log.d("mylogs", "slideOffset $slideOffset")
+            }
+
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -137,7 +190,7 @@ class APODFragment : BaseFragment<FragmentApodBinding>(FragmentApodBinding::infl
             it.tvDesriptionError.setText(error)
             it.root.snackbarWithAction(
                 getString(R.string.Error), getString(R.string.try_again), {
-                    viewModel.sendRequest()
+                    sendRequestAPOD()
                 }
             )
         }

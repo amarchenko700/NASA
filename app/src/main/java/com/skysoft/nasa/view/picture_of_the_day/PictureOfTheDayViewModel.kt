@@ -23,11 +23,11 @@ class PictureOfTheDayViewModel(
         return liveAppState
     }
 
-    private fun sendRequestToNasa() {
+    private fun sendRequestToNasa(dateRequest: String) {
         liveAppState.postValue(PictureOfTheDayAppState.Loading(null))
         App().getRetrofit()?.let {
             val apodResponse = it.create(PictureOfTheDayAPI::class.java)
-            apodResponse.getPictureOfTheDay(BuildConfig.NASA_API_KEY).enqueue(
+            apodResponse.getPictureOfTheDay(BuildConfig.NASA_API_KEY, dateRequest).enqueue(
                 object : Callback<PDOServerResponse> {
                     override fun onResponse(
                         call: Call<PDOServerResponse>,
@@ -61,9 +61,9 @@ class PictureOfTheDayViewModel(
         }
     }
 
-    fun sendRequest() {
+    fun sendRequest(dateRequest: String) {
         if (hasInternet()) {
-            sendRequestToNasa()
+            sendRequestToNasa(dateRequest)
         } else {
             liveAppState.postValue(PictureOfTheDayAppState.Error(App.getStringFromResources(R.string.not_availability_of_the_internet)))
         }

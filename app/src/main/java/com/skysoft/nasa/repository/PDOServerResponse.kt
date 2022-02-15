@@ -18,6 +18,7 @@ data class PDOServerResponse(
 
 @Serializable
 data class PDOError(
+    // for code response 403: API_KEY_INVALID
     val error: PDOErrorDetail
 )
 
@@ -25,4 +26,11 @@ data class PDOError(
 data class PDOErrorDetail(
     val code: String,
     val message: String
+)
+
+@Serializable
+data class PDOErrorDetail400(
+    // for code response 400
+    val code: String,
+    val msg: String
 )

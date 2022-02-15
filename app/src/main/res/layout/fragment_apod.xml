@@ -6,17 +6,18 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:id="@+id/serverData"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="@dimen/padding_constraint_layout_server_data"
+        android:orientation="vertical"
         android:visibility="visible">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/inputLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/search_wiki"
             app:counterEnabled="true"
@@ -24,10 +25,6 @@
             app:endIconDrawable="@drawable/ic_wikipedia"
             app:endIconMode="custom"
             app:helperText="@string/wiki_helper_text"
-            app:layout_constraintTop_toTopOf="@id/serverData"
-            app:layout_constraintBottom_toTopOf="@id/imageView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:startIconDrawable="@drawable/ic_plus_fab">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -36,15 +33,46 @@
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupDatePhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:singleLine="true"
+            android:layout_gravity="center"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:id="@+id/chipDayBeforeYesterday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_day_before_yesterday" />
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:id="@+id/chipYesterday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_yesterday" />
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:id="@+id/chipToday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_today" />
+        </com.google.android.material.chip.ChipGroup>
+
         <com.skysoft.nasa.utils.EquilateralImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/unavailableServer"

@@ -3,6 +3,8 @@ package com.skysoft.nasa.utils
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import java.text.SimpleDateFormat
+import java.util.*
 
 fun hasInternet(): Boolean {
     val connectivityManager =
