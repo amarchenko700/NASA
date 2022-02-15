@@ -75,13 +75,13 @@ class APODFragment : BaseFragment<FragmentApodBinding>(FragmentApodBinding::infl
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.appBarFAV -> {
-                Toast.makeText(requireContext(), "app_bar_fav", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "appBarFAV", Toast.LENGTH_SHORT).show()
             }
             R.id.appBarSettings -> {
-                //requireActivity().supportFragmentManager.beginTransaction().replace(R.id.container,ChipsFragment.newInstance()).commit()
+                Toast.makeText(requireContext(), "appBarSettings", Toast.LENGTH_SHORT).show()
             }
             android.R.id.home -> {
-                //BottomNavigationDrawerFragment().show(requireActivity().supportFragmentManager,"ff")
+                BottomNavigationDrawerFragment().show(requireActivity().supportFragmentManager, "")
             }
         }
         return super.onOptionsItemSelected(item)

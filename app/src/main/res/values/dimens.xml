@@ -9,4 +9,8 @@
     <dimen name="layout_marginTop_bottom_sheet_description_header">5dp</dimen>
     <dimen name="paddingStart_bottom_sheet">10dp</dimen>
     <dimen name="paddingEnd_bottom_sheet">10dp</dimen>
+    <dimen name="margin_start_navigation_view">8dp</dimen>
+    <dimen name="margin_top_navigation_view">8dp</dimen>
+    <dimen name="margin_end_navigation_view">8dp</dimen>
+    <dimen name="behavior_peekHeight">100dp</dimen>
 </resources>
