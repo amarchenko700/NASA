@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="navigationBarColorNasa" format="color"/>
+    <attr name="windowBackgroundNasa" format="color"/>
+    <attr name="boxBackgroundColorNasa" format="color"/>
+    <attr name="backgroundTintBottomSheetContainer" format="color"/>
+    <attr name="backgroundTintBottomAppBar" format="color"/>
+    <attr name="backgroundTintFloatingActionButton" format="color"/>
+    <attr name="chipBackgroundColorNasa" format="color"/>
+</resources>

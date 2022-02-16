@@ -25,7 +25,8 @@
             app:endIconDrawable="@drawable/ic_wikipedia"
             app:endIconMode="custom"
             app:helperText="@string/wiki_helper_text"
-            app:startIconDrawable="@drawable/ic_plus_fab">
+            app:startIconDrawable="@drawable/ic_plus_fab"
+            app:boxBackgroundColor="?boxBackgroundColorNasa">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inputEditText"
@@ -47,6 +48,8 @@
                 android:id="@+id/chipDayBeforeYesterday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:chipBackgroundColor="?chipBackgroundColorNasa"
+                android:textColor="@color/white"
                 android:text="@string/text_day_before_yesterday" />
 
             <com.google.android.material.chip.Chip
@@ -54,6 +57,8 @@
                 android:id="@+id/chipYesterday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:chipBackgroundColor="?chipBackgroundColorNasa"
+                android:textColor="@color/white"
                 android:text="@string/text_yesterday" />
 
             <com.google.android.material.chip.Chip
@@ -61,6 +66,8 @@
                 android:id="@+id/chipToday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:chipBackgroundColor="?chipBackgroundColorNasa"
+                android:textColor="@color/white"
                 android:text="@string/text_today" />
         </com.google.android.material.chip.ChipGroup>
 
@@ -78,7 +85,6 @@
         android:id="@+id/unavailableServer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
         android:visibility="gone">
 
         <LinearLayout
@@ -115,7 +121,6 @@
         android:id="@+id/loadingLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background_splashscreen_bottom"
         android:visibility="gone">
 
         <ProgressBar
@@ -135,7 +140,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:backgroundTint="@color/red_600"
+        app:backgroundTint="?backgroundTintBottomAppBar"
         app:fabAlignmentMode="center"
         app:navigationIcon="@drawable/ic_hamburger_menu_bottom_bar" />
 
@@ -145,6 +150,7 @@
         android:layout_height="wrap_content"
         app:layout_anchor="@id/bottomAppBar"
         app:srcCompat="@drawable/ic_plus_fab"
-        app:tint="@color/white" />
+        app:tint="@color/white"
+        android:backgroundTint="?backgroundTintFloatingActionButton"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

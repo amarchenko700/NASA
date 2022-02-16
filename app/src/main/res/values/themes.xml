@@ -1,8 +1,38 @@
 <resources>
-    <!-- Base application theme. -->
+
+    <style name="Lunar" parent="Theme.NASA">
+        <item name="navigationBarColorNasa">@color/dark_lunar</item>
+        <item name="windowBackgroundNasa">@color/middle_lunar</item>
+        <item name="boxBackgroundColorNasa">@color/light_lunar</item>
+        <item name="backgroundTintBottomSheetContainer">@color/light_lunar</item>
+        <item name="backgroundTintBottomAppBar">@color/dark_lunar</item>
+        <item name="backgroundTintFloatingActionButton">@color/middle_lunar</item>
+        <item name="chipBackgroundColorNasa">@color/dark_lunar</item>
+    </style>
+
+    <style name="Martian" parent="Theme.NASA">
+        <item name="navigationBarColorNasa">@color/dark_martian</item>
+        <item name="windowBackgroundNasa">@color/middle_martian</item>
+        <item name="boxBackgroundColorNasa">@color/light_martian</item>
+        <item name="backgroundTintBottomSheetContainer">@color/light_martian</item>
+        <item name="backgroundTintBottomAppBar">@color/dark_martian</item>
+        <item name="backgroundTintFloatingActionButton">@color/middle_martian</item>
+        <item name="chipBackgroundColorNasa">@color/dark_martian</item>
+     </style>
+
+     <style name="Earth" parent="Theme.NASA">
+         <item name="navigationBarColorNasa">@color/dark_earth</item>
+         <item name="windowBackgroundNasa">@color/middle_earth</item>
+         <item name="boxBackgroundColorNasa">@color/light_earth</item>
+         <item name="backgroundTintBottomSheetContainer">@color/light_earth</item>
+         <item name="backgroundTintBottomAppBar">@color/dark_earth</item>
+         <item name="backgroundTintFloatingActionButton">@color/middle_earth</item>
+         <item name="chipBackgroundColorNasa">@color/dark_earth</item>
+    </style>
+
     <style name="Theme.NASA" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="android:navigationBarColor">@color/red_500</item>
-        <item name="colorPrimary">@color/red_600</item>
+        <item name="android:navigationBarColor">?navigationBarColorNasa</item>
+        <item name="colorPrimary">@color/black</item>
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorPrimaryContainer">@color/red_100</item>
         <item name="colorOnPrimaryContainer">@color/red_900</item>
@@ -15,5 +45,7 @@
         <item name="colorOnTertiary">@color/white</item>
         <item name="colorTertiaryContainer">@color/red_100</item>
         <item name="colorOnTertiaryContainer">@color/red_900</item>
+        <item name="colorPrimaryDark">?navigationBarColorNasa</item>
+        <item name="android:windowBackground">?windowBackgroundNasa</item>
     </style>
 </resources>
