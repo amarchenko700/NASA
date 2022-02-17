@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center|top">
+
+    <TextView
+        style="@style/settingsTextViewStyle"
+        android:text="@string/theme_choice" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroupChoiceTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:singleLine="true"
+        android:layout_gravity="center"
+        app:singleSelection="true">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipThemeLunar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/theme_lunar" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipThemeMartian"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/theme_martian" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipThemeEarth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/theme_earth" />
+    </com.google.android.material.chip.ChipGroup>
+
+</LinearLayout>

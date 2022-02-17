@@ -13,4 +13,5 @@
     <dimen name="margin_top_navigation_view">8dp</dimen>
     <dimen name="margin_end_navigation_view">8dp</dimen>
     <dimen name="behavior_peekHeight">100dp</dimen>
+    <dimen name="theme_choice_text_size">25sp</dimen>
 </resources>
