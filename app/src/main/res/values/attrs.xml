@@ -6,5 +6,6 @@
     <attr name="backgroundTintBottomSheetContainer" format="color"/>
     <attr name="backgroundTintBottomAppBar" format="color"/>
     <attr name="backgroundTintFloatingActionButton" format="color"/>
+    <attr name="chipBackgroundColorNasaPressed" format="color"/>
     <attr name="chipBackgroundColorNasa" format="color"/>
 </resources>
