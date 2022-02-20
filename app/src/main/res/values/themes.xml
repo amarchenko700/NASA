@@ -39,6 +39,8 @@
     <style name="chipStyleNasa" parent="Widget.MaterialComponents.Chip.Choice">
         <item name="android:textColor">?textColorNasa</item>
         <item name="chipBackgroundColor">@color/color_selector</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
     </style>
 
     <style name="settingsTextViewStyle" parent="Theme.NASA">
