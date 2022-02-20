@@ -13,19 +13,23 @@ import com.skysoft.nasa.databinding.FragmentSettingsBinding
 import com.skysoft.nasa.utils.*
 import com.skysoft.nasa.view.BaseFragment
 
-class SettingsFragment : Fragment() {
+class SettingsFragment() : Fragment() {
 
     private var currentTheme: Int? = null
 
     private var _binding: FragmentSettingsBinding? = null
     val binding: FragmentSettingsBinding get() = _binding!!
 
+    constructor(themeId:Int):this(){
+        currentTheme = themeId
+    }
+
     private val chipChoiceThemeListener = { theme: Int ->
         currentTheme = theme
         setCurrentThemeLocal(theme)
         requireActivity().supportFragmentManager
             .beginTransaction()
-            .replace(R.id.fragment_container, SettingsFragment())
+            .replace(R.id.fragment_container, SettingsFragment(currentTheme!!))
             .commit()
     }
 
