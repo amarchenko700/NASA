@@ -7,8 +7,9 @@
         <item name="backgroundTintBottomSheetContainer">@color/light_lunar</item>
         <item name="backgroundTintBottomAppBar">@color/dark_lunar</item>
         <item name="backgroundTintFloatingActionButton">@color/middle_lunar</item>
-        <item name="chipBackgroundColorNasaPressed">@color/dark_lunar</item>
-        <item name="chipBackgroundColorNasa">@color/semi_dark_lunar</item>
+        <item name="chipBackgroundColorNasaPressed">@color/light_lunar</item>
+        <item name="chipBackgroundColorNasa">@color/dark_lunar</item>
+        <item name="textColorNasa">@color/black</item>
     </style>
 
     <style name="Martian" parent="Theme.NASA">
@@ -18,8 +19,9 @@
         <item name="backgroundTintBottomSheetContainer">@color/light_martian</item>
         <item name="backgroundTintBottomAppBar">@color/dark_martian</item>
         <item name="backgroundTintFloatingActionButton">@color/middle_martian</item>
-        <item name="chipBackgroundColorNasaPressed">@color/dark_martian</item>
-        <item name="chipBackgroundColorNasa">@color/semi_dark_martian</item>
+        <item name="chipBackgroundColorNasaPressed">@color/light_martian</item>
+        <item name="chipBackgroundColorNasa">@color/dark_martian</item>
+        <item name="textColorNasa">@color/white</item>
      </style>
 
      <style name="Earth" parent="Theme.NASA">
@@ -29,12 +31,13 @@
          <item name="backgroundTintBottomSheetContainer">@color/light_earth</item>
          <item name="backgroundTintBottomAppBar">@color/dark_earth</item>
          <item name="backgroundTintFloatingActionButton">@color/middle_earth</item>
-         <item name="chipBackgroundColorNasaPressed">@color/dark_earth</item>
-         <item name="chipBackgroundColorNasa">@color/semi_dark_earth</item>
+         <item name="chipBackgroundColorNasaPressed">@color/light_earth</item>
+         <item name="chipBackgroundColorNasa">@color/dark_earth</item>
+         <item name="textColorNasa">@color/white</item>
     </style>
 
     <style name="chipStyleNasa" parent="Widget.MaterialComponents.Chip.Choice">
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">?textColorNasa</item>
         <item name="chipBackgroundColor">@color/color_selector</item>
     </style>
 

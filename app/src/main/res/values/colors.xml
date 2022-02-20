@@ -23,11 +23,8 @@
     <color name="textColor_bottom_sheet_description_header">#000</color>
 
     <color name="dark_lunar">#cbae82</color>
-    <color name="semi_dark_lunar">#FBE5C3</color>
     <color name="dark_martian">#b61827</color>
-    <color name="semi_dark_martian">#E63849</color>
     <color name="dark_earth">#00701a</color>
-    <color name="semi_dark_earth">#03C12F</color>
     <color name="middle_lunar">#ffe0b2</color>
     <color name="middle_martian">#ef5350</color>
     <color name="light_lunar">#ffffe4</color>

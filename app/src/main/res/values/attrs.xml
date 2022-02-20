@@ -8,4 +8,5 @@
     <attr name="backgroundTintFloatingActionButton" format="color"/>
     <attr name="chipBackgroundColorNasaPressed" format="color"/>
     <attr name="chipBackgroundColorNasa" format="color"/>
+    <attr name="textColorNasa" format="color"/>
 </resources>
