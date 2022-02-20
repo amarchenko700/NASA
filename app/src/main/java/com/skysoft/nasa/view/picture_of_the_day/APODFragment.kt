@@ -77,6 +77,7 @@ class APODFragment (): BaseFragment<FragmentApodBinding>(FragmentApodBinding::in
             it.chipYesterday.setOnClickListener { sendRequestAPOD() }
             it.chipDayBeforeYesterday.setOnClickListener { sendRequestAPOD() }
         }
+        sendRequestAPOD()
     }
 
     private fun sendRequestAPOD() {
