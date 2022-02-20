@@ -18,15 +18,18 @@ fun hasInternet(): Boolean {
     }
 }
 
+fun getDefaultTheme(): Int{
+    return R.style.Earth
+}
+
 fun getThemeForNumber(numberCurrentTheme: Int?): Int {
-    val defaultTheme = R.style.Earth
     numberCurrentTheme?.let {
         return when (it) {
             THEME_LUNAR -> R.style.Lunar
             THEME_MARTIAN -> R.style.Martian
             THEME_EARTH -> R.style.Earth
-            else -> defaultTheme
+            else -> getDefaultTheme()
         }
     }
-    return defaultTheme
+    return getDefaultTheme()
 }
