@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.skysoft.nasa.R
 import com.skysoft.nasa.utils.*
 import com.skysoft.nasa.view.picture_of_the_day.APODFragment
@@ -27,8 +28,9 @@ class MainActivity : AppCompatActivity() {
             setTheme(getThemeForNumber(currentTheme))
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                setTheme(R.style.NASADark)
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             } else if (currentThemeSP != 0) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 setTheme(getThemeForNumber(currentThemeSP))
             }
         }
