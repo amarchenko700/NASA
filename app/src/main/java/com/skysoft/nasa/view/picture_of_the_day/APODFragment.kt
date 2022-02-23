@@ -66,8 +66,32 @@ class APODFragment (): BaseFragment<FragmentApodBinding>(FragmentApodBinding::in
         initBottomSheetBehavior()
         initFAB()
 
-        (requireActivity() as MainActivity).setSupportActionBar(binding.bottomAppBar)
+        //(requireActivity() as MainActivity).setSupportActionBar(binding.bottomAppBar)
         setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_bottom_bar, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.appBarFAV -> {
+                Toast.makeText(requireContext(), "appBarFAV", Toast.LENGTH_SHORT).show()
+            }
+            R.id.appBarSettings -> {
+                requireActivity().supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, SettingsFragment.newInstance())
+                    .addToBackStack(null)
+                    .commit()
+            }
+            android.R.id.home -> {
+                BottomNavigationDrawerFragment().show(requireActivity().supportFragmentManager, "")
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun initChipsAPOD() {
@@ -104,84 +128,60 @@ class APODFragment (): BaseFragment<FragmentApodBinding>(FragmentApodBinding::in
     }
 
     private fun initFAB() {
-        binding.let { b ->
-            b.fab.setOnClickListener {
-                if (isMain) {
-                    b.bottomAppBar.navigationIcon = null
-                    b.bottomAppBar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_END
-                    b.fab.setImageResource(R.drawable.ic_back_fab)
-                    b.bottomAppBar.replaceMenu(R.menu.menu_bottom_bar_other_screen)
-                } else {
-                    b.bottomAppBar.navigationIcon = ContextCompat.getDrawable(
-                        requireContext(),
-                        R.drawable.ic_hamburger_menu_bottom_bar
-                    )
-                    b.bottomAppBar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
-                    b.fab.setImageResource(R.drawable.ic_plus_fab)
-                    b.bottomAppBar.replaceMenu(R.menu.menu_bottom_bar)
-                }
-                isMain = !isMain
-            }
-        }
+//        binding.let { b ->
+//            b.fab.setOnClickListener {
+//                if (isMain) {
+//                    b.bottomAppBar.navigationIcon = null
+//                    b.bottomAppBar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_END
+//                    b.fab.setImageResource(R.drawable.ic_back_fab)
+//                    b.bottomAppBar.replaceMenu(R.menu.menu_bottom_bar_other_screen)
+//                } else {
+//                    b.bottomAppBar.navigationIcon = ContextCompat.getDrawable(
+//                        requireContext(),
+//                        R.drawable.ic_hamburger_menu_bottom_bar
+//                    )
+//                    b.bottomAppBar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
+//                    b.fab.setImageResource(R.drawable.ic_plus_fab)
+//                    b.bottomAppBar.replaceMenu(R.menu.menu_bottom_bar)
+//                }
+//                isMain = !isMain
+//            }
+//        }
     }
 
     private fun initBottomSheetBehavior() {
-        bottomSheetBehavior = BottomSheetBehavior.from(binding.included.bottomSheetContainer)
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-
-        bottomSheetBehavior.addBottomSheetCallback(object :
-            BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                when (newState) {
-                    BottomSheetBehavior.STATE_DRAGGING ->
-                        Toast.makeText(requireContext(), "STATE_DRAGGING", Toast.LENGTH_SHORT)
-                            .show()
-                    BottomSheetBehavior.STATE_COLLAPSED ->
-                        Toast.makeText(requireContext(), "STATE_COLLAPSED", Toast.LENGTH_SHORT)
-                            .show()
-                    BottomSheetBehavior.STATE_EXPANDED ->
-                        Toast.makeText(requireContext(), "STATE_EXPANDED", Toast.LENGTH_SHORT)
-                            .show()
-                    BottomSheetBehavior.STATE_HALF_EXPANDED ->
-                        Toast.makeText(requireContext(), "STATE_HALF_EXPANDED", Toast.LENGTH_SHORT)
-                            .show()
-                    BottomSheetBehavior.STATE_HIDDEN ->
-                        Toast.makeText(requireContext(), "STATE_HIDDEN", Toast.LENGTH_SHORT).show()
-                    BottomSheetBehavior.STATE_SETTLING ->
-                        Toast.makeText(requireContext(), "STATE_SETTLING", Toast.LENGTH_SHORT)
-                            .show()
-                }
-            }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                Log.d("mylogs", "slideOffset $slideOffset")
-            }
-
-        })
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_bottom_bar, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.appBarFAV -> {
-                Toast.makeText(requireContext(), "appBarFAV", Toast.LENGTH_SHORT).show()
-            }
-            R.id.appBarSettings -> {
-                requireActivity().supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, SettingsFragment.newInstance())
-                    .addToBackStack(null)
-                    .commit()
-            }
-            android.R.id.home -> {
-                BottomNavigationDrawerFragment().show(requireActivity().supportFragmentManager, "")
-            }
-        }
-        return super.onOptionsItemSelected(item)
+//        bottomSheetBehavior = BottomSheetBehavior.from(binding.included.bottomSheetContainer)
+//        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+//
+//        bottomSheetBehavior.addBottomSheetCallback(object :
+//            BottomSheetBehavior.BottomSheetCallback() {
+//            override fun onStateChanged(bottomSheet: View, newState: Int) {
+//                when (newState) {
+//                    BottomSheetBehavior.STATE_DRAGGING ->
+//                        Toast.makeText(requireContext(), "STATE_DRAGGING", Toast.LENGTH_SHORT)
+//                            .show()
+//                    BottomSheetBehavior.STATE_COLLAPSED ->
+//                        Toast.makeText(requireContext(), "STATE_COLLAPSED", Toast.LENGTH_SHORT)
+//                            .show()
+//                    BottomSheetBehavior.STATE_EXPANDED ->
+//                        Toast.makeText(requireContext(), "STATE_EXPANDED", Toast.LENGTH_SHORT)
+//                            .show()
+//                    BottomSheetBehavior.STATE_HALF_EXPANDED ->
+//                        Toast.makeText(requireContext(), "STATE_HALF_EXPANDED", Toast.LENGTH_SHORT)
+//                            .show()
+//                    BottomSheetBehavior.STATE_HIDDEN ->
+//                        Toast.makeText(requireContext(), "STATE_HIDDEN", Toast.LENGTH_SHORT).show()
+//                    BottomSheetBehavior.STATE_SETTLING ->
+//                        Toast.makeText(requireContext(), "STATE_SETTLING", Toast.LENGTH_SHORT)
+//                            .show()
+//                }
+//            }
+//
+//            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+//                Log.d("mylogs", "slideOffset $slideOffset")
+//            }
+//
+//        })
     }
 
     private fun setVisibility(isError: Boolean, isLoading: Boolean, isSuccess: Boolean) {
@@ -225,8 +225,8 @@ class APODFragment (): BaseFragment<FragmentApodBinding>(FragmentApodBinding::in
             is PictureOfTheDayAppState.Success -> {
                 binding.let {
                     setVisibility(false, false, true)
-                    it.included.bottomSheetDescriptionHeader.setText(pictureOfTheDayAppState.serverResponse.title)
-                    it.included.bottomSheetDescription.setText(pictureOfTheDayAppState.serverResponse.explanation)
+//                    it.included.bottomSheetDescriptionHeader.setText(pictureOfTheDayAppState.serverResponse.title)
+//                    it.included.bottomSheetDescription.setText(pictureOfTheDayAppState.serverResponse.explanation)
                     it.imageView.load(pictureOfTheDayAppState.serverResponse.url) {
                         placeholder(R.drawable.ic_no_photo_vector)
                     }

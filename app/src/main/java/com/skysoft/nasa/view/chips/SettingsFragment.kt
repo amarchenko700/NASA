@@ -11,26 +11,30 @@ import androidx.fragment.app.Fragment
 import com.skysoft.nasa.R
 import com.skysoft.nasa.databinding.FragmentSettingsBinding
 import com.skysoft.nasa.utils.*
-import com.skysoft.nasa.view.BaseFragment
 
 class SettingsFragment() : Fragment() {
-
-    private var currentTheme: Int? = null
 
     private var _binding: FragmentSettingsBinding? = null
     val binding: FragmentSettingsBinding get() = _binding!!
 
-    constructor(themeId:Int):this(){
-        currentTheme = themeId
-    }
+    private val chipChoiceThemeListener = { ->
 
-    private val chipChoiceThemeListener = { theme: Int ->
-        currentTheme = theme
-        setCurrentThemeLocal(theme)
+        setCurrentThemeLocal(NUMBER_CURRENT_THEME)
         requireActivity().supportFragmentManager
             .beginTransaction()
-            .replace(R.id.fragment_container, SettingsFragment(currentTheme!!))
+            .replace(R.id.fragment_container, SettingsFragment())
             .commit()
+
+        with(binding) {
+            chipThemeLunar.isChecked = false
+            chipThemeMartian.isChecked = false
+            chipThemeEarth.isChecked = false
+            when (NUMBER_CURRENT_THEME) {
+                1 -> chipThemeLunar.isChecked = true
+                2 -> chipThemeMartian.isChecked = true
+                3 -> chipThemeEarth.isChecked = true
+            }
+        }
     }
 
     override fun onCreateView(
@@ -38,29 +42,35 @@ class SettingsFragment() : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val context: Context = ContextThemeWrapper(activity, getThemeForNumber(getCurrentThemeLocal()))
+        val context: Context =
+            ContextThemeWrapper(activity, getThemeForNumber(getCurrentThemeLocal()))
         val localInflater = inflater.cloneInContext(context)
-        _binding = FragmentSettingsBinding.inflate(localInflater) // здесь inflater созданный нами на месте
+        _binding =
+            FragmentSettingsBinding.inflate(localInflater) // здесь inflater созданный нами на месте
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if(savedInstanceState!=null){
-            currentTheme = savedInstanceState.getInt(KEY_CURRENT_THEME)
+        if (savedInstanceState != null) {
+            NUMBER_CURRENT_THEME = savedInstanceState.getInt(KEY_CURRENT_THEME)
         }
 
         with(binding) {
             chipThemeLunar.setOnClickListener {
-                chipChoiceThemeListener(THEME_LUNAR)
+                NUMBER_CURRENT_THEME = THEME_LUNAR
+                chipChoiceThemeListener()
             }
             chipThemeMartian.setOnClickListener {
-                chipChoiceThemeListener(THEME_MARTIAN)
+                NUMBER_CURRENT_THEME = THEME_MARTIAN
+                chipChoiceThemeListener()
             }
             chipThemeEarth.setOnClickListener {
-                chipChoiceThemeListener(THEME_EARTH)
+                NUMBER_CURRENT_THEME = THEME_EARTH
+                chipChoiceThemeListener()
             }
+
         }
 
     }
@@ -78,7 +88,7 @@ class SettingsFragment() : Fragment() {
     override fun onDetach() {
         super.onDetach()
         // Нажали на кнопку назад
-        currentTheme?.let {
+        NUMBER_CURRENT_THEME.let {
             requireActivity().supportFragmentManager.setFragmentResult(
                 KEY_SETTINGS,
                 Bundle().apply {
@@ -91,13 +101,15 @@ class SettingsFragment() : Fragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        currentTheme?.let { outState.putInt(KEY_CURRENT_THEME, it) }
-
+        outState.putInt(KEY_CURRENT_THEME, NUMBER_CURRENT_THEME)
     }
 
     private fun setCurrentThemeLocal(currentTheme: Int) {
         val sharedPreferences =
-            requireActivity().getSharedPreferences(TAG_SHARED_PREFERENCE, AppCompatActivity.MODE_PRIVATE)
+            requireActivity().getSharedPreferences(
+                SHARED_PREFERENCE_TAG,
+                AppCompatActivity.MODE_PRIVATE
+            )
         val editor = sharedPreferences.edit()
         editor.putInt(KEY_CURRENT_THEME_SP, currentTheme)
         editor.apply()
@@ -105,7 +117,10 @@ class SettingsFragment() : Fragment() {
 
     private fun getCurrentThemeLocal(): Int {
         val sharedPreferences =
-            requireActivity().getSharedPreferences(TAG_SHARED_PREFERENCE, AppCompatActivity.MODE_PRIVATE)
+            requireActivity().getSharedPreferences(
+                SHARED_PREFERENCE_TAG,
+                AppCompatActivity.MODE_PRIVATE
+            )
         return sharedPreferences.getInt(KEY_CURRENT_THEME_SP, getDefaultTheme())
     }
 }

@@ -45,20 +45,17 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipDayBeforeYesterday"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/chipStyleNasa"
                 android:text="@string/text_day_before_yesterday" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipYesterday"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/chipStyleNasa"
                 android:text="@string/text_yesterday" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipToday"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/chipStyleNasa"
                 android:text="@string/text_today" />
         </com.google.android.material.chip.ChipGroup>
 
@@ -122,6 +119,7 @@
 
     </FrameLayout>
 
+    <!-- Оставляю себе на будущее как шпаргалку
     <include
         android:id="@+id/included"
         layout="@layout/bottom_sheet_layout" />
@@ -142,6 +140,6 @@
         app:layout_anchor="@id/bottomAppBar"
         app:srcCompat="@drawable/ic_plus_fab"
         app:tint="@color/white"
-        android:backgroundTint="?backgroundTintFloatingActionButton"/>
+        android:backgroundTint="?backgroundTintFloatingActionButton"/>-->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
