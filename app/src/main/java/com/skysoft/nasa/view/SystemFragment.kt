@@ -10,6 +10,7 @@ import com.skysoft.nasa.databinding.FragmentApodBinding
 import com.skysoft.nasa.databinding.FragmentSystemBinding
 
 class SystemFragment : BaseFragment<FragmentSystemBinding>(FragmentSystemBinding::inflate) {
-
-
+    companion object {
+        fun newInstance() = SystemFragment()
+    }
 }

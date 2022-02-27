@@ -1,58 +1,40 @@
 package com.skysoft.nasa.view.picture_of_the_day
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentResultListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import coil.load
-import com.google.android.material.bottomappbar.BottomAppBar
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
 import com.skysoft.nasa.R
 import com.skysoft.nasa.databinding.FragmentApodBinding
-import com.skysoft.nasa.utils.*
+import com.skysoft.nasa.utils.KEY_SETTINGS
 import com.skysoft.nasa.view.BaseFragment
-import com.skysoft.nasa.view.MainActivity
 import com.skysoft.nasa.view.PictureOfTheDayAppState
 import com.skysoft.nasa.view.chips.SettingsFragment
 import java.text.SimpleDateFormat
 import java.util.*
 
-class APODFragment (): BaseFragment<FragmentApodBinding>(FragmentApodBinding::inflate),
-    FragmentResultListener {
+class APODFragment() : BaseFragment<FragmentApodBinding>(FragmentApodBinding::inflate) {
 
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private val viewModel: PictureOfTheDayViewModel by lazy {
         ViewModelProvider(this).get(PictureOfTheDayViewModel::class.java)
     }
-    private var isMain = true
-    private var setAppTheme = {theme:Int->}
 
-    constructor(setAppThemeFun: (theme: Int) -> Unit):this(){
-        setAppTheme = setAppThemeFun
-    }
+    private var setAppTheme = { theme: Int -> }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getData().observe(viewLifecycleOwner, Observer {
             renderData(it)
         })
-
-        requireActivity().supportFragmentManager.setFragmentResultListener(
-            KEY_SETTINGS, viewLifecycleOwner,
-            this
-        )
 
         sendRequestAPOD()
 
@@ -63,10 +45,6 @@ class APODFragment (): BaseFragment<FragmentApodBinding>(FragmentApodBinding::in
             })
         }
         initChipsAPOD()
-        initBottomSheetBehavior()
-        initFAB()
-
-        //(requireActivity() as MainActivity).setSupportActionBar(binding.bottomAppBar)
         setHasOptionsMenu(true)
     }
 
@@ -125,63 +103,6 @@ class APODFragment (): BaseFragment<FragmentApodBinding>(FragmentApodBinding::in
         val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         calendar.add(Calendar.DATE, dateShift)
         return formatter.format(calendar.time)
-    }
-
-    private fun initFAB() {
-//        binding.let { b ->
-//            b.fab.setOnClickListener {
-//                if (isMain) {
-//                    b.bottomAppBar.navigationIcon = null
-//                    b.bottomAppBar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_END
-//                    b.fab.setImageResource(R.drawable.ic_back_fab)
-//                    b.bottomAppBar.replaceMenu(R.menu.menu_bottom_bar_other_screen)
-//                } else {
-//                    b.bottomAppBar.navigationIcon = ContextCompat.getDrawable(
-//                        requireContext(),
-//                        R.drawable.ic_hamburger_menu_bottom_bar
-//                    )
-//                    b.bottomAppBar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
-//                    b.fab.setImageResource(R.drawable.ic_plus_fab)
-//                    b.bottomAppBar.replaceMenu(R.menu.menu_bottom_bar)
-//                }
-//                isMain = !isMain
-//            }
-//        }
-    }
-
-    private fun initBottomSheetBehavior() {
-//        bottomSheetBehavior = BottomSheetBehavior.from(binding.included.bottomSheetContainer)
-//        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-//
-//        bottomSheetBehavior.addBottomSheetCallback(object :
-//            BottomSheetBehavior.BottomSheetCallback() {
-//            override fun onStateChanged(bottomSheet: View, newState: Int) {
-//                when (newState) {
-//                    BottomSheetBehavior.STATE_DRAGGING ->
-//                        Toast.makeText(requireContext(), "STATE_DRAGGING", Toast.LENGTH_SHORT)
-//                            .show()
-//                    BottomSheetBehavior.STATE_COLLAPSED ->
-//                        Toast.makeText(requireContext(), "STATE_COLLAPSED", Toast.LENGTH_SHORT)
-//                            .show()
-//                    BottomSheetBehavior.STATE_EXPANDED ->
-//                        Toast.makeText(requireContext(), "STATE_EXPANDED", Toast.LENGTH_SHORT)
-//                            .show()
-//                    BottomSheetBehavior.STATE_HALF_EXPANDED ->
-//                        Toast.makeText(requireContext(), "STATE_HALF_EXPANDED", Toast.LENGTH_SHORT)
-//                            .show()
-//                    BottomSheetBehavior.STATE_HIDDEN ->
-//                        Toast.makeText(requireContext(), "STATE_HIDDEN", Toast.LENGTH_SHORT).show()
-//                    BottomSheetBehavior.STATE_SETTLING ->
-//                        Toast.makeText(requireContext(), "STATE_SETTLING", Toast.LENGTH_SHORT)
-//                            .show()
-//                }
-//            }
-//
-//            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-//                Log.d("mylogs", "slideOffset $slideOffset")
-//            }
-//
-//        })
     }
 
     private fun setVisibility(isError: Boolean, isLoading: Boolean, isSuccess: Boolean) {
@@ -245,12 +166,6 @@ class APODFragment (): BaseFragment<FragmentApodBinding>(FragmentApodBinding::in
     }
 
     companion object {
-        fun newInstance(setAppTheme: (theme: Int) -> Unit) = APODFragment(setAppTheme)
-    }
-
-    override fun onFragmentResult(requestKey: String, result: Bundle) {
-        if(requestKey == KEY_SETTINGS){
-            setAppTheme(result.getInt(KEY_SETTINGS_THEME))
-        }
+        fun newInstance() = APODFragment()
     }
 }

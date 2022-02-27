@@ -11,4 +11,7 @@ import com.skysoft.nasa.databinding.FragmentMarsBinding
 
 class EarthFragment : BaseFragment<FragmentEarthBinding>(FragmentEarthBinding::inflate) {
 
+    companion object {
+        fun newInstance() = EarthFragment()
+    }
 }

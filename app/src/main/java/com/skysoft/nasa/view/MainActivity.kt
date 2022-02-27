@@ -9,12 +9,14 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.skysoft.nasa.R
 import com.skysoft.nasa.databinding.ActivityMainBinding
-import com.skysoft.nasa.databinding.FragmentSettingsBinding
 import com.skysoft.nasa.utils.*
 import com.skysoft.nasa.view.chips.SettingsFragment
 import com.skysoft.nasa.view.picture_of_the_day.APODFragment
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var arrayScreen: MutableList<Int>
+    private var numberCurrentTheme = 0
 
     private var _binding: ActivityMainBinding? = null
     val binding: ActivityMainBinding get() = _binding!!
@@ -22,23 +24,46 @@ class MainActivity : AppCompatActivity() {
     private var idScreen = 0
 
     private lateinit var sp: SharedPreferences
-    private val setAppTheme = { theme: Int ->
-        NUMBER_CURRENT_THEME = theme
-        recreate()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        _binding = ActivityMainBinding.inflate(layoutInflater)
-
+        if (savedInstanceState != null) {
+            idScreen = savedInstanceState.getInt(KEY_CURRENT_SCREEN)
+            arrayScreen = savedInstanceState.getIntegerArrayList(KEY_CALL_STACK)!!
+        }else{
+            arrayScreen = mutableListOf<Int>()
+        }
         setAppThemeMain(savedInstanceState)
 
+        _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initBottomNavigation()
 
-        openFragment(APODFragment.newInstance(setAppTheme), FRAGMENT_APOD_TAG)
+        when (idScreen) {
+            0 -> openFragment(APODFragment.newInstance(), FRAGMENT_APOD_TAG)
+            1 -> openFragment(EarthFragment.newInstance(), FRAGMENT_EARTH_TAG)
+            2 -> openFragment(MarsFragment.newInstance(), FRAGMENT_MARS_TAG)
+            3 -> openFragment(SystemFragment.newInstance(), FRAGMENT_SYSTEM_TAG)
+            4 -> openFragment(SettingsFragment.newInstance(), FRAGMENT_SETTINGS_TAG, false)
+        }
+        setActivatedBottomNavigationView(idScreen)
+    }
 
+    private fun setActivatedBottomNavigationView(numberScreen: Int) {
+        idScreen = numberScreen
+        binding.bottomNavigationView.menu.getItem(numberScreen).isChecked = true
+        openScreen()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (arrayScreen.size > 1) {
+            arrayScreen.remove(arrayScreen.lastIndex)
+            setActivatedBottomNavigationView(arrayScreen[arrayScreen.lastIndex])
+        } else {
+            setActivatedBottomNavigationView(0)
+        }
     }
 
     private fun initBottomNavigation() {
@@ -50,29 +75,28 @@ class MainActivity : AppCompatActivity() {
                 R.id.bottom_view_system -> idScreen = 3
                 R.id.bottom_view_settings -> idScreen = 4
             }
+            arrayScreen.add(idScreen)
             openScreen()
         }
     }
 
     private fun setAppThemeMain(savedInstanceState: Bundle?) {
         sp = getSharedPreferences(SHARED_PREFERENCE_TAG, Context.MODE_PRIVATE)
-        val currentThemeSP = sp.getInt(KEY_CURRENT_THEME_SP, 0)
-        if (savedInstanceState != null) {
-            savedInstanceState.getInt(KEY_CURRENT_THEME).also { NUMBER_CURRENT_THEME = it }
-        } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            } else if (currentThemeSP != 0) {
-                NUMBER_CURRENT_THEME = currentThemeSP
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            }
+        val currentThemeSP = sp.getInt(KEY_CURRENT_THEME, 0)
+        if (currentThemeSP != 0) {
+            numberCurrentTheme = currentThemeSP
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else if (savedInstanceState != null) {
+            numberCurrentTheme = savedInstanceState.getInt(KEY_CURRENT_THEME).also { numberCurrentTheme = it }
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
-        setTheme(getThemeForNumber(NUMBER_CURRENT_THEME))
+        setTheme(getThemeForNumber(numberCurrentTheme))
     }
 
     fun openScreen(): Boolean {
         when (idScreen) {
-            0 -> openFragment(APODFragment.newInstance(setAppTheme), FRAGMENT_APOD_TAG)
+            0 -> openFragment(APODFragment.newInstance(), FRAGMENT_APOD_TAG)
             1 -> openFragment(EarthFragment(), FRAGMENT_EARTH_TAG)
             2 -> openFragment(MarsFragment(), FRAGMENT_MARS_TAG)
             3 -> openFragment(SystemFragment(), FRAGMENT_SYSTEM_TAG)
@@ -89,13 +113,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        NUMBER_CURRENT_THEME.let {
-            outState.putInt(KEY_CURRENT_THEME, it)
-            sp.edit().putInt(KEY_CURRENT_THEME_SP, it).apply()
-        }
+        outState.putInt(KEY_CURRENT_SCREEN, idScreen)
+        outState.putInt(KEY_CURRENT_THEME, numberCurrentTheme)
+        outState.putIntegerArrayList(KEY_CALL_STACK, ArrayList(arrayScreen))
     }
 
-    private fun openFragment(fragment: Fragment, tag: String, addToBackStack: Boolean = false) {
+    private fun openFragment(fragment: Fragment, tag: String, addToBackStack: Boolean = true) {
         var fragmentToOpen = supportFragmentManager.findFragmentByTag(tag)
         if (fragmentToOpen == null) {
             fragmentToOpen = fragment
