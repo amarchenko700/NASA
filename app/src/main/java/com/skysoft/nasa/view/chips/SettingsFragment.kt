@@ -1,6 +1,7 @@
 package com.skysoft.nasa.view.chips
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -57,6 +58,13 @@ class SettingsFragment() : Fragment() {
             NUMBER_CURRENT_THEME = savedInstanceState.getInt(KEY_CURRENT_THEME)
         }
 
+        initChipClickListener()
+        binding.applyThemeBtn.setOnClickListener {
+            requireActivity().recreate()
+        }
+    }
+
+    private fun initChipClickListener() {
         with(binding) {
             chipThemeLunar.setOnClickListener {
                 NUMBER_CURRENT_THEME = THEME_LUNAR
@@ -70,9 +78,7 @@ class SettingsFragment() : Fragment() {
                 NUMBER_CURRENT_THEME = THEME_EARTH
                 chipChoiceThemeListener()
             }
-
         }
-
     }
 
     override fun onDestroy() {
@@ -88,14 +94,16 @@ class SettingsFragment() : Fragment() {
     override fun onDetach() {
         super.onDetach()
         // Нажали на кнопку назад
-        NUMBER_CURRENT_THEME.let {
-            requireActivity().supportFragmentManager.setFragmentResult(
-                KEY_SETTINGS,
-                Bundle().apply {
-                    putInt(
-                        KEY_SETTINGS_THEME, it
-                    )
-                })
+        with(requireActivity().supportFragmentManager) {
+            NUMBER_CURRENT_THEME.let {
+                setFragmentResult(
+                    KEY_SETTINGS,
+                    Bundle().apply {
+                        putInt(
+                            KEY_SETTINGS_THEME, it
+                        )
+                    })
+            }
         }
     }
 

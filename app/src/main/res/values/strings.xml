@@ -30,4 +30,5 @@
     <string name="mars">Mars</string>
     <string name="system">System</string>
     <string name="home">Home</string>
+    <string name="apply_button_text">Применить</string>
 </resources>

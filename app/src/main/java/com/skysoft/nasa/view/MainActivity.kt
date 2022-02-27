@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
             1 -> openFragment(EarthFragment(), FRAGMENT_EARTH_TAG)
             2 -> openFragment(MarsFragment(), FRAGMENT_MARS_TAG)
             3 -> openFragment(SystemFragment(), FRAGMENT_SYSTEM_TAG)
-            4 -> openFragment(SettingsFragment(), FRAGMENT_SETTINGS_TAG)
+            4 -> openFragment(SettingsFragment(), FRAGMENT_SETTINGS_TAG, true)
             else -> return false
         }
         return true
