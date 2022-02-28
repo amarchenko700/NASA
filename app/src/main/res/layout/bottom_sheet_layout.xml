@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottomSheetContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_bottom_sheet_container"
+    app:behavior_hideable="false"
+    app:behavior_peekHeight="@dimen/behavior_peekHeight"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <View
+        android:id="@+id/bottomSheetLine"
+        android:layout_width="@dimen/layout_width_bottom_sheet_line"
+        android:layout_height="@dimen/layout_height_bottom_sheet_line"
+        android:layout_marginTop="@dimen/layout_marginTop_bottom_sheet_line"
+        android:background="@color/background_bottom_sheet_line"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/bottomSheetDescriptionHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/layout_marginTop_bottom_sheet_description_header"
+        android:paddingStart="@dimen/paddingStart_bottom_sheet"
+        android:paddingEnd="@dimen/paddingEnd_bottom_sheet"
+        android:textColor="@color/textColor_bottom_sheet_description_header"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bottomSheetLine" />
+
+    <TextView
+        android:id="@+id/bottomSheetDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/paddingStart_bottom_sheet"
+        android:paddingEnd="@dimen/paddingEnd_bottom_sheet"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bottomSheetDescriptionHeader" />
+</androidx.constraintlayout.widget.ConstraintLayout>

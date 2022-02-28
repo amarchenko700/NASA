@@ -1,3 +1,25 @@
 <resources>
     <string name="app_name">NASA</string>
+
+    <string name="photo_of_the_day_stub">Фото дня</string>
+    <string name="search_wiki">Найти в Википедии</string>
+    <string name="wiki_helper_text">Поищите термин в Википедии</string>
+    <string name="favourite">Избранное</string>
+    <string name="settings">Настройки</string>
+    <string name="search">Поиск</string>
+
+    <string name="unavailable_server">Ошибка загрузки данных</string>
+    <string name="image_content_description">Картинка погоды</string>
+    <string name="try_again">Попробовать еще раз</string>
+    <string name="Error">Error</string>
+    <string name="availability_of_the_internet">Появился интернет!</string>
+    <string name="not_availability_of_the_internet">Интернета нет!</string>
+    <string name="text_chip_default">default</string>
+    <string name="text_chip_entry">entry</string>
+    <string name="text_chip_choice">Choice</string>
+    <string name="text_chip_action">Action</string>
+    <string name="text_chip_filter">Filter</string>
+    <string name="text_day_before_yesterday">Позавчера</string>
+    <string name="text_yesterday">Вчера</string>
+    <string name="text_today">Сегодня</string>
 </resources>

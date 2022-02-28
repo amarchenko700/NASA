@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="@dimen/margin_start_navigation_view"
+        android:layout_marginTop="@dimen/margin_top_navigation_view"
+        android:layout_marginEnd="@dimen/margin_end_navigation_view"
+        app:menu="@menu/menu_bottom_navigation" />
+</FrameLayout>
