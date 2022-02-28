@@ -15,7 +15,6 @@ import com.skysoft.nasa.view.picture_of_the_day.APODFragment
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var arrayScreen: MutableList<Int>
     private var numberCurrentTheme = 0
 
     private var _binding: ActivityMainBinding? = null
@@ -30,9 +29,6 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState != null) {
             idScreen = savedInstanceState.getInt(KEY_CURRENT_SCREEN)
-            arrayScreen = savedInstanceState.getIntegerArrayList(KEY_CALL_STACK)!!
-        }else{
-            arrayScreen = mutableListOf<Int>()
         }
         setAppThemeMain(savedInstanceState)
 
@@ -45,24 +41,7 @@ class MainActivity : AppCompatActivity() {
             1 -> openFragment(EarthFragment.newInstance(), FRAGMENT_EARTH_TAG)
             2 -> openFragment(MarsFragment.newInstance(), FRAGMENT_MARS_TAG)
             3 -> openFragment(SystemFragment.newInstance(), FRAGMENT_SYSTEM_TAG)
-            4 -> openFragment(SettingsFragment.newInstance(), FRAGMENT_SETTINGS_TAG, false)
-        }
-        setActivatedBottomNavigationView(idScreen)
-    }
-
-    private fun setActivatedBottomNavigationView(numberScreen: Int) {
-        idScreen = numberScreen
-        binding.bottomNavigationView.menu.getItem(numberScreen).isChecked = true
-        openScreen()
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        if (arrayScreen.size > 1) {
-            arrayScreen.remove(arrayScreen.lastIndex)
-            setActivatedBottomNavigationView(arrayScreen[arrayScreen.lastIndex])
-        } else {
-            setActivatedBottomNavigationView(0)
+            4 -> openFragment(SettingsFragment.newInstance(), FRAGMENT_SETTINGS_TAG, true)
         }
     }
 
@@ -75,7 +54,6 @@ class MainActivity : AppCompatActivity() {
                 R.id.bottom_view_system -> idScreen = 3
                 R.id.bottom_view_settings -> idScreen = 4
             }
-            arrayScreen.add(idScreen)
             openScreen()
         }
     }
@@ -100,7 +78,7 @@ class MainActivity : AppCompatActivity() {
             1 -> openFragment(EarthFragment(), FRAGMENT_EARTH_TAG)
             2 -> openFragment(MarsFragment(), FRAGMENT_MARS_TAG)
             3 -> openFragment(SystemFragment(), FRAGMENT_SYSTEM_TAG)
-            4 -> openFragment(SettingsFragment(), FRAGMENT_SETTINGS_TAG, true)
+            4 -> openFragment(SettingsFragment(), FRAGMENT_SETTINGS_TAG)
             else -> return false
         }
         return true
@@ -115,10 +93,9 @@ class MainActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
         outState.putInt(KEY_CURRENT_SCREEN, idScreen)
         outState.putInt(KEY_CURRENT_THEME, numberCurrentTheme)
-        outState.putIntegerArrayList(KEY_CALL_STACK, ArrayList(arrayScreen))
     }
 
-    private fun openFragment(fragment: Fragment, tag: String, addToBackStack: Boolean = true) {
+    private fun openFragment(fragment: Fragment, tag: String, addToBackStack: Boolean = false) {
         var fragmentToOpen = supportFragmentManager.findFragmentByTag(tag)
         if (fragmentToOpen == null) {
             fragmentToOpen = fragment

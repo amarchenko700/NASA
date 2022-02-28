@@ -15,7 +15,6 @@ import coil.load
 import com.google.android.material.snackbar.Snackbar
 import com.skysoft.nasa.R
 import com.skysoft.nasa.databinding.FragmentApodBinding
-import com.skysoft.nasa.utils.KEY_SETTINGS
 import com.skysoft.nasa.view.BaseFragment
 import com.skysoft.nasa.view.PictureOfTheDayAppState
 import com.skysoft.nasa.view.chips.SettingsFragment
@@ -28,15 +27,11 @@ class APODFragment() : BaseFragment<FragmentApodBinding>(FragmentApodBinding::in
         ViewModelProvider(this).get(PictureOfTheDayViewModel::class.java)
     }
 
-    private var setAppTheme = { theme: Int -> }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getData().observe(viewLifecycleOwner, Observer {
             renderData(it)
         })
-
-        sendRequestAPOD()
 
         binding.inputLayout.setEndIconOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW).apply {
@@ -45,6 +40,8 @@ class APODFragment() : BaseFragment<FragmentApodBinding>(FragmentApodBinding::in
             })
         }
         initChipsAPOD()
+        sendRequestAPOD()
+
         setHasOptionsMenu(true)
     }
 
@@ -79,7 +76,6 @@ class APODFragment() : BaseFragment<FragmentApodBinding>(FragmentApodBinding::in
             it.chipYesterday.setOnClickListener { sendRequestAPOD() }
             it.chipDayBeforeYesterday.setOnClickListener { sendRequestAPOD() }
         }
-        sendRequestAPOD()
     }
 
     private fun sendRequestAPOD() {
