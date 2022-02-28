@@ -3,8 +3,7 @@ package com.skysoft.nasa.utils
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import java.text.SimpleDateFormat
-import java.util.*
+import com.skysoft.nasa.R
 
 fun hasInternet(): Boolean {
     val connectivityManager =
@@ -17,4 +16,20 @@ fun hasInternet(): Boolean {
         activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
         else -> false
     }
+}
+
+fun getDefaultTheme(): Int{
+    return R.style.Earth
+}
+
+fun getThemeForNumber(numberCurrentTheme: Int?): Int {
+    numberCurrentTheme?.let {
+        return when (it) {
+            THEME_LUNAR -> R.style.Lunar
+            THEME_MARTIAN -> R.style.Martian
+            THEME_EARTH -> R.style.Earth
+            else -> getDefaultTheme()
+        }
+    }
+    return getDefaultTheme()
 }

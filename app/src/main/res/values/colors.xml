@@ -18,9 +18,18 @@
     <color name="red_800">#C82424</color>
     <color name="red_900">#AE0B0B</color>
 
-    <color name="background_splashscreen_bottom">#78DAFD</color>
     <color name="background_bottom_sheet_container">#f6f6fa</color>
     <color name="background_bottom_sheet_line">#663b4351</color>
     <color name="textColor_bottom_sheet_description_header">#000</color>
+
+    <color name="dark_lunar">#cbae82</color>
+    <color name="dark_martian">#b61827</color>
+    <color name="dark_earth">#00701a</color>
+    <color name="middle_lunar">#ffe0b2</color>
+    <color name="middle_martian">#ef5350</color>
+    <color name="light_lunar">#ffffe4</color>
+    <color name="light_martian">#ff867c</color>
+    <color name="middle_earth">#43a047</color>
+    <color name="light_earth">#76d275</color>
 
 </resources>

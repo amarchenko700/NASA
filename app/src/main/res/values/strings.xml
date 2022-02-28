@@ -22,4 +22,8 @@
     <string name="text_day_before_yesterday">Позавчера</string>
     <string name="text_yesterday">Вчера</string>
     <string name="text_today">Сегодня</string>
+    <string name="theme_choice">Настройка темы</string>
+    <string name="theme_lunar">Лунная</string>
+    <string name="theme_martian">Марсианская</string>
+    <string name="theme_earth">Земная</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.skysoft.nasa.view.picture_of_the_day
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -11,6 +12,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentResultListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import coil.load
@@ -19,26 +21,39 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
 import com.skysoft.nasa.R
 import com.skysoft.nasa.databinding.FragmentApodBinding
+import com.skysoft.nasa.utils.*
 import com.skysoft.nasa.view.BaseFragment
 import com.skysoft.nasa.view.MainActivity
 import com.skysoft.nasa.view.PictureOfTheDayAppState
-import com.skysoft.nasa.view.chips.ChipsFragment
+import com.skysoft.nasa.view.chips.SettingsFragment
 import java.text.SimpleDateFormat
 import java.util.*
 
-class APODFragment : BaseFragment<FragmentApodBinding>(FragmentApodBinding::inflate) {
+class APODFragment (): BaseFragment<FragmentApodBinding>(FragmentApodBinding::inflate),
+    FragmentResultListener {
 
-    lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private val viewModel: PictureOfTheDayViewModel by lazy {
         ViewModelProvider(this).get(PictureOfTheDayViewModel::class.java)
     }
-    var isMain = true
+    private var isMain = true
+    private var setAppTheme = {theme:Int->}
+
+    constructor(setAppThemeFun: (theme: Int) -> Unit):this(){
+        setAppTheme = setAppThemeFun
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getData().observe(viewLifecycleOwner, Observer {
             renderData(it)
         })
+
+        requireActivity().supportFragmentManager.setFragmentResultListener(
+            KEY_SETTINGS, viewLifecycleOwner,
+            this
+        )
+
         sendRequestAPOD()
 
         binding.inputLayout.setEndIconOnClickListener {
@@ -62,10 +77,11 @@ class APODFragment : BaseFragment<FragmentApodBinding>(FragmentApodBinding::infl
             it.chipYesterday.setOnClickListener { sendRequestAPOD() }
             it.chipDayBeforeYesterday.setOnClickListener { sendRequestAPOD() }
         }
+        sendRequestAPOD()
     }
 
-    private fun sendRequestAPOD(){
-        with(binding){
+    private fun sendRequestAPOD() {
+        with(binding) {
             when {
                 chipToday.isChecked -> {
                     viewModel.sendRequest(getDateForRequestAPOD(0))
@@ -80,7 +96,7 @@ class APODFragment : BaseFragment<FragmentApodBinding>(FragmentApodBinding::infl
         }
     }
 
-    private fun getDateForRequestAPOD(dateShift: Int): String{
+    private fun getDateForRequestAPOD(dateShift: Int): String {
         val calendar = Calendar.getInstance()
         val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         calendar.add(Calendar.DATE, dateShift)
@@ -157,7 +173,7 @@ class APODFragment : BaseFragment<FragmentApodBinding>(FragmentApodBinding::infl
             R.id.appBarSettings -> {
                 requireActivity().supportFragmentManager
                     .beginTransaction()
-                    .replace(R.id.fragment_container, ChipsFragment.newInstance())
+                    .replace(R.id.fragment_container, SettingsFragment.newInstance())
                     .addToBackStack(null)
                     .commit()
             }
@@ -229,6 +245,12 @@ class APODFragment : BaseFragment<FragmentApodBinding>(FragmentApodBinding::infl
     }
 
     companion object {
-        fun newInstance() = APODFragment()
+        fun newInstance(setAppTheme: (theme: Int) -> Unit) = APODFragment(setAppTheme)
+    }
+
+    override fun onFragmentResult(requestKey: String, result: Bundle) {
+        if(requestKey == KEY_SETTINGS){
+            setAppTheme(result.getInt(KEY_SETTINGS_THEME))
+        }
     }
 }
