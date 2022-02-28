@@ -11,7 +11,10 @@ import com.skysoft.nasa.R
 import com.skysoft.nasa.databinding.ActivityMainBinding
 import com.skysoft.nasa.utils.*
 import com.skysoft.nasa.view.chips.SettingsFragment
+import com.skysoft.nasa.view.earth.EarthFragment
+import com.skysoft.nasa.view.mars.MarsFragment
 import com.skysoft.nasa.view.picture_of_the_day.APODFragment
+import com.skysoft.nasa.view.system.SystemFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -66,7 +69,8 @@ class MainActivity : AppCompatActivity() {
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         } else if (savedInstanceState != null) {
-            numberCurrentTheme = savedInstanceState.getInt(KEY_CURRENT_THEME).also { numberCurrentTheme = it }
+            numberCurrentTheme =
+                savedInstanceState.getInt(KEY_CURRENT_THEME).also { numberCurrentTheme = it }
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
         setTheme(getThemeForNumber(numberCurrentTheme))

@@ -16,6 +16,11 @@ data class PDOServerResponse(
     val url: String
 )
 
+data class EarthResponse(
+    val date: String,
+    val url: String
+)
+
 @Serializable
 data class PDOError(
     // for code response 403: API_KEY_INVALID
