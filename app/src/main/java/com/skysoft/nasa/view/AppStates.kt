@@ -1,5 +1,6 @@
 package com.skysoft.nasa.view
 
+import com.skysoft.nasa.repository.EarthResponse
 import com.skysoft.nasa.repository.PDOServerResponse
 
 sealed class PictureOfTheDayAppState {
@@ -21,7 +22,7 @@ sealed class MarsAppState {
 }
 
 sealed class EarthAppState {
-    data class Success(val serverResponse: PDOServerResponse) : EarthAppState()
+    data class Success(val serverResponse: EarthResponse) : EarthAppState()
     data class Error(val error: String) : EarthAppState()
     data class Loading(val process: Int?) : EarthAppState()
 }

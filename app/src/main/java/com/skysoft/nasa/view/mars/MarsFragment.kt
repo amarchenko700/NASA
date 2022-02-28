@@ -1,13 +1,9 @@
 package com.skysoft.nasa.view.mars
 
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
+import android.widget.MediaController
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import coil.load
@@ -17,10 +13,6 @@ import com.skysoft.nasa.databinding.FragmentMarsBinding
 import com.skysoft.nasa.utils.setVisibilityForLayout
 import com.skysoft.nasa.view.BaseFragment
 import com.skysoft.nasa.view.MarsAppState
-import com.skysoft.nasa.view.PictureOfTheDayAppState
-import com.skysoft.nasa.view.chips.SettingsFragment
-import com.skysoft.nasa.view.picture_of_the_day.BottomNavigationDrawerFragment
-import com.skysoft.nasa.view.picture_of_the_day.PictureOfTheDayViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -66,10 +58,11 @@ class MarsFragment : BaseFragment<FragmentMarsBinding>(FragmentMarsBinding::infl
     }
 
     private fun getDateForRequestAPOD(dateShift: Int): String {
-        val calendar = Calendar.getInstance()
-        val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        calendar.add(Calendar.DATE, dateShift)
-        return formatter.format(calendar.time)
+//        val calendar = Calendar.getInstance()
+//        val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+//        calendar.add(Calendar.DATE, dateShift)
+//        return formatter.format(calendar.time)
+        return "2022-02-16" //именно в эту дату есть видео
     }
 
     private fun setVisibility(isError: Boolean, isLoading: Boolean, isSuccess: Boolean) {
@@ -107,8 +100,24 @@ class MarsFragment : BaseFragment<FragmentMarsBinding>(FragmentMarsBinding::infl
                     setVisibility(false, false, true)
 //                    it.included.bottomSheetDescriptionHeader.setText(pictureOfTheDayAppState.serverResponse.title)
 //                    it.included.bottomSheetDescription.setText(pictureOfTheDayAppState.serverResponse.explanation)
-                    it.imageView.load(marsAppState.serverResponse.url) {
-                        placeholder(R.drawable.ic_no_photo_vector)
+                    if (marsAppState.serverResponse.mediaType == "video") {
+                        it.imageView.visibility = View.GONE
+                        it.videoView.visibility = View.VISIBLE
+
+//                        val path = "android.resource://" + requireActivity().packageName + "/" + marsAppState.serverResponse.url
+                        val path = "https://youtu.be/7GgTvKNwbLo"
+                        val mc = MediaController(requireActivity())
+                        mc.setAnchorView(it.videoView)
+                        it.videoView.setVideoURI(Uri.parse(path))
+                        it.videoView.setMediaController(mc)
+                        it.videoView.requestFocus()
+                        it.videoView.start()
+                    } else {
+                        it.imageView.visibility = View.VISIBLE
+                        it.videoView.visibility = View.GONE
+                        it.imageView.load(marsAppState.serverResponse.url) {
+                            placeholder(R.drawable.ic_no_photo_vector)
+                        }
                     }
                 }
             }

@@ -1,13 +1,7 @@
 package com.skysoft.nasa.view.earth
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import coil.load
@@ -17,10 +11,6 @@ import com.skysoft.nasa.databinding.FragmentEarthBinding
 import com.skysoft.nasa.utils.setVisibilityForLayout
 import com.skysoft.nasa.view.BaseFragment
 import com.skysoft.nasa.view.EarthAppState
-import com.skysoft.nasa.view.PictureOfTheDayAppState
-import com.skysoft.nasa.view.chips.SettingsFragment
-import com.skysoft.nasa.view.picture_of_the_day.BottomNavigationDrawerFragment
-import com.skysoft.nasa.view.picture_of_the_day.PictureOfTheDayViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -53,19 +43,19 @@ class EarthFragment : BaseFragment<FragmentEarthBinding>(FragmentEarthBinding::i
         with(binding) {
             when {
                 chipToday.isChecked -> {
-                    viewModel.sendRequest(getDateForRequestAPOD(0))
+                    viewModel.sendRequest(getDateForRequest(0))
                 }
                 chipYesterday.isChecked -> {
-                    viewModel.sendRequest(getDateForRequestAPOD(-1))
+                    viewModel.sendRequest(getDateForRequest(-1))
                 }
                 chipDayBeforeYesterday.isChecked -> {
-                    viewModel.sendRequest(getDateForRequestAPOD(-2))
+                    viewModel.sendRequest(getDateForRequest(-2))
                 }
             }
         }
     }
 
-    private fun getDateForRequestAPOD(dateShift: Int): String {
+    private fun getDateForRequest(dateShift: Int): String {
         val calendar = Calendar.getInstance()
         val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         calendar.add(Calendar.DATE, dateShift)

@@ -5,10 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.skysoft.nasa.BuildConfig
 import com.skysoft.nasa.R
-import com.skysoft.nasa.repository.PDOError
-import com.skysoft.nasa.repository.PDOErrorDetail400
-import com.skysoft.nasa.repository.PDOServerResponse
-import com.skysoft.nasa.repository.PictureOfTheDayAPI
+import com.skysoft.nasa.repository.*
 import com.skysoft.nasa.utils.App
 import com.skysoft.nasa.utils.hasInternet
 import com.skysoft.nasa.view.EarthAppState
@@ -28,12 +25,12 @@ class EarthViewModel(private val liveAppState: MutableLiveData<EarthAppState> = 
     private fun sendRequestToNasa(dateRequest: String) {
         liveAppState.postValue(EarthAppState.Loading(null))
         App().getRetrofit()?.let {
-            val apodResponse = it.create(PictureOfTheDayAPI::class.java)
-            apodResponse.getPictureOfTheDay(BuildConfig.NASA_API_KEY, dateRequest).enqueue(
-                object : Callback<PDOServerResponse> {
+            val apodResponse = it.create(EarthAPI::class.java)
+            apodResponse.getPictureOfEarth(BuildConfig.NASA_API_KEY, dateRequest, 49.05315, 33.22754).enqueue(
+                object : Callback<EarthResponse> {
                     override fun onResponse(
-                        call: Call<PDOServerResponse>,
-                        response: Response<PDOServerResponse>
+                        call: Call<EarthResponse>,
+                        response: Response<EarthResponse>
                     ) {
 
                         if (response.isSuccessful && response.body() != null) {
@@ -49,7 +46,7 @@ class EarthViewModel(private val liveAppState: MutableLiveData<EarthAppState> = 
                         }
                     }
 
-                    override fun onFailure(call: Call<PDOServerResponse>, t: Throwable) {
+                    override fun onFailure(call: Call<EarthResponse>, t: Throwable) {
                         liveAppState.postValue(EarthAppState.Error(t.toString()))
                     }
                 }
@@ -57,7 +54,7 @@ class EarthViewModel(private val liveAppState: MutableLiveData<EarthAppState> = 
         }
     }
 
-    private fun getErrorMessage(response: Response<PDOServerResponse>, retrofit: Retrofit): String {
+    private fun getErrorMessage(response: Response<EarthResponse>, retrofit: Retrofit): String {
         var errorMessage = "НЛО: не опознная летающая ошибка с позывным код "
         when(response.code()){
             400->{val errorConverter = retrofit.responseBodyConverter<PDOErrorDetail400>(
