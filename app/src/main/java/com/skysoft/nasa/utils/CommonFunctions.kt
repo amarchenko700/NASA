@@ -3,6 +3,7 @@ package com.skysoft.nasa.utils
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.view.View
 import com.skysoft.nasa.R
 
 fun hasInternet(): Boolean {
@@ -32,4 +33,12 @@ fun getThemeForNumber(numberCurrentTheme: Int?): Int {
         }
     }
     return getDefaultTheme()
+}
+
+fun setVisibilityForLayout(visibility: Boolean, layout: View) {
+    if (visibility) {
+        layout.visibility = View.VISIBLE
+    } else {
+        layout.visibility = View.GONE
+    }
 }

@@ -26,4 +26,9 @@
     <string name="theme_lunar">Лунная</string>
     <string name="theme_martian">Марсианская</string>
     <string name="theme_earth">Земная</string>
+    <string name="earth">Earth</string>
+    <string name="mars">Mars</string>
+    <string name="system">System</string>
+    <string name="home">Home</string>
+    <string name="apply_button_text">Применить</string>
 </resources>

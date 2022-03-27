@@ -10,6 +10,7 @@
         <item name="chipBackgroundColorNasaPressed">@color/light_lunar</item>
         <item name="chipBackgroundColorNasa">@color/dark_lunar</item>
         <item name="textColorNasa">@color/black</item>
+        <item name="btnNasaBackgroundTint">@color/dark_lunar</item>
     </style>
 
     <style name="Martian" parent="Theme.NASA">
@@ -22,6 +23,7 @@
         <item name="chipBackgroundColorNasaPressed">@color/light_martian</item>
         <item name="chipBackgroundColorNasa">@color/dark_martian</item>
         <item name="textColorNasa">@color/white</item>
+        <item name="btnNasaBackgroundTint">@color/dark_martian</item>
      </style>
 
      <style name="Earth" parent="Theme.NASA">
@@ -34,6 +36,7 @@
          <item name="chipBackgroundColorNasaPressed">@color/light_earth</item>
          <item name="chipBackgroundColorNasa">@color/dark_earth</item>
          <item name="textColorNasa">@color/white</item>
+         <item name="btnNasaBackgroundTint">@color/dark_earth</item>
     </style>
 
     <style name="chipStyleNasa" parent="Widget.MaterialComponents.Chip.Choice">

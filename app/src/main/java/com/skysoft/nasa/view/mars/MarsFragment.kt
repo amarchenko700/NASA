@@ -1,29 +1,23 @@
-package com.skysoft.nasa.view.picture_of_the_day
+package com.skysoft.nasa.view.mars
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import coil.load
 import com.google.android.material.snackbar.Snackbar
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.skysoft.nasa.R
-import com.skysoft.nasa.databinding.FragmentApodBinding
+import com.skysoft.nasa.databinding.FragmentMarsBinding
+import com.skysoft.nasa.utils.setVisibilityForLayout
 import com.skysoft.nasa.view.BaseFragment
-import com.skysoft.nasa.view.PictureOfTheDayAppState
-import com.skysoft.nasa.view.chips.SettingsFragment
-import java.text.SimpleDateFormat
-import java.util.*
+import com.skysoft.nasa.view.MarsAppState
 
-class APODFragment() : BaseFragment<FragmentApodBinding>(FragmentApodBinding::inflate) {
+class MarsFragment : BaseFragment<FragmentMarsBinding>(FragmentMarsBinding::inflate) {
 
-    private val viewModel: PictureOfTheDayViewModel by lazy {
-        ViewModelProvider(this).get(PictureOfTheDayViewModel::class.java)
+    private val viewModel: MarsViewModel by lazy {
+        ViewModelProvider(this).get(MarsViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -32,40 +26,8 @@ class APODFragment() : BaseFragment<FragmentApodBinding>(FragmentApodBinding::in
             renderData(it)
         })
 
-        binding.inputLayout.setEndIconOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW).apply {
-                data =
-                    Uri.parse("https://en.wikipedia.org/wiki/${binding.inputEditText.text.toString()}")
-            })
-        }
         initChipsAPOD()
         sendRequestAPOD()
-
-        setHasOptionsMenu(true)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_bottom_bar, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.appBarFAV -> {
-                Toast.makeText(requireContext(), "appBarFAV", Toast.LENGTH_SHORT).show()
-            }
-            R.id.appBarSettings -> {
-                requireActivity().supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, SettingsFragment.newInstance())
-                    .addToBackStack(null)
-                    .commit()
-            }
-            android.R.id.home -> {
-                BottomNavigationDrawerFragment().show(requireActivity().supportFragmentManager, "")
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun initChipsAPOD() {
@@ -94,10 +56,20 @@ class APODFragment() : BaseFragment<FragmentApodBinding>(FragmentApodBinding::in
     }
 
     private fun getDateForRequestAPOD(dateShift: Int): String {
-        val calendar = Calendar.getInstance()
-        val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        calendar.add(Calendar.DATE, dateShift)
-        return formatter.format(calendar.time)
+//        val calendar = Calendar.getInstance()
+//        val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+//        calendar.add(Calendar.DATE, dateShift)
+//        return formatter.format(calendar.time)
+        return "2022-02-16" //именно в эту дату есть видео
+    }
+
+    private fun showNasaVideo(videoId:String){
+        lifecycle.addObserver(binding.youtubePlayerView)
+        binding.youtubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+            override fun onReady(youTubePlayer: YouTubePlayer) {
+                youTubePlayer.loadVideo(videoId, 0f)
+            }
+        })
     }
 
     private fun setVisibility(isError: Boolean, isLoading: Boolean, isSuccess: Boolean) {
@@ -105,14 +77,6 @@ class APODFragment() : BaseFragment<FragmentApodBinding>(FragmentApodBinding::in
             setVisibilityForLayout(isError, it.unavailableServer)
             setVisibilityForLayout(isLoading, it.loadingLayout)
             setVisibilityForLayout(isSuccess, it.serverData)
-        }
-    }
-
-    private fun setVisibilityForLayout(visibility: Boolean, layout: View) {
-        if (visibility) {
-            layout.visibility = View.VISIBLE
-        } else {
-            layout.visibility = View.GONE
         }
     }
 
@@ -128,23 +92,35 @@ class APODFragment() : BaseFragment<FragmentApodBinding>(FragmentApodBinding::in
         }
     }
 
-    private fun renderData(pictureOfTheDayAppState: PictureOfTheDayAppState) {
-        when (pictureOfTheDayAppState) {
-            is PictureOfTheDayAppState.Error -> {
+    private fun renderData(marsAppState: MarsAppState) {
+        when (marsAppState) {
+            is MarsAppState.Error -> {
                 binding.run {
-                    showError(pictureOfTheDayAppState.error)
+                    showError(marsAppState.error)
                 }
             }
-            is PictureOfTheDayAppState.Loading -> {
+            is MarsAppState.Loading -> {
                 setVisibility(false, true, false)
             }
-            is PictureOfTheDayAppState.Success -> {
+            is MarsAppState.Success -> {
                 binding.let {
                     setVisibility(false, false, true)
 //                    it.included.bottomSheetDescriptionHeader.setText(pictureOfTheDayAppState.serverResponse.title)
 //                    it.included.bottomSheetDescription.setText(pictureOfTheDayAppState.serverResponse.explanation)
-                    it.imageView.load(pictureOfTheDayAppState.serverResponse.url) {
-                        placeholder(R.drawable.ic_no_photo_vector)
+                    if (marsAppState.serverResponse.mediaType == "video") {
+                        it.imageView.visibility = View.GONE
+                        it.youtubePlayerView.visibility = View.VISIBLE
+
+//                        val path = "android.resource://" + requireActivity().packageName + "/" + marsAppState.serverResponse.url
+                        val path = "https://www.youtube.com/embed/liapnqj9GDc?rel=0"
+                        showNasaVideo("7RXHscN6qA0")
+
+                    } else {
+                        it.imageView.visibility = View.VISIBLE
+                        it.youtubePlayerView.visibility = View.GONE
+                        it.imageView.load(marsAppState.serverResponse.url) {
+                            placeholder(R.drawable.ic_no_photo_vector)
+                        }
                     }
                 }
             }
@@ -161,6 +137,6 @@ class APODFragment() : BaseFragment<FragmentApodBinding>(FragmentApodBinding::in
     }
 
     companion object {
-        fun newInstance() = APODFragment()
+        fun newInstance() = MarsFragment()
     }
 }

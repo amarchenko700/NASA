@@ -36,4 +36,12 @@
             android:text="@string/theme_earth" />
     </com.google.android.material.chip.ChipGroup>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/applyThemeBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/apply_button_text"
+        android:textAllCaps="false"
+        android:textColor="?textColorNasa"
+        android:backgroundTint="?btnNasaBackgroundTint"/>
 </LinearLayout>
