@@ -11,7 +11,6 @@ import com.skysoft.nasa.repository.PDOServerResponse
 import com.skysoft.nasa.repository.PictureOfTheDayAPI
 import com.skysoft.nasa.utils.App
 import com.skysoft.nasa.utils.hasInternet
-import com.skysoft.nasa.view.EarthAppState
 import com.skysoft.nasa.view.MarsAppState
 import retrofit2.Call
 import retrofit2.Callback

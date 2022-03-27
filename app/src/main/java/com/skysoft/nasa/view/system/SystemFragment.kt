@@ -1,26 +1,16 @@
 package com.skysoft.nasa.view.system
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import coil.load
 import com.google.android.material.snackbar.Snackbar
 import com.skysoft.nasa.R
 import com.skysoft.nasa.databinding.FragmentSystemBinding
-import com.skysoft.nasa.view.BaseFragment
-import com.skysoft.nasa.view.PictureOfTheDayAppState
-import com.skysoft.nasa.view.SystemAppState
-import androidx.lifecycle.Observer
 import com.skysoft.nasa.utils.setVisibilityForLayout
-import com.skysoft.nasa.view.chips.SettingsFragment
-import com.skysoft.nasa.view.picture_of_the_day.BottomNavigationDrawerFragment
-import com.skysoft.nasa.view.picture_of_the_day.PictureOfTheDayViewModel
+import com.skysoft.nasa.view.BaseFragment
+import com.skysoft.nasa.view.SystemAppState
 import java.text.SimpleDateFormat
 import java.util.*
 

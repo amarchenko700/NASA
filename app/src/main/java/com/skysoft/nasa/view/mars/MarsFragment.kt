@@ -1,20 +1,18 @@
 package com.skysoft.nasa.view.mars
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.widget.MediaController
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import coil.load
 import com.google.android.material.snackbar.Snackbar
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.skysoft.nasa.R
 import com.skysoft.nasa.databinding.FragmentMarsBinding
 import com.skysoft.nasa.utils.setVisibilityForLayout
 import com.skysoft.nasa.view.BaseFragment
 import com.skysoft.nasa.view.MarsAppState
-import java.text.SimpleDateFormat
-import java.util.*
 
 class MarsFragment : BaseFragment<FragmentMarsBinding>(FragmentMarsBinding::inflate) {
 
@@ -65,6 +63,15 @@ class MarsFragment : BaseFragment<FragmentMarsBinding>(FragmentMarsBinding::infl
         return "2022-02-16" //именно в эту дату есть видео
     }
 
+    private fun showNasaVideo(videoId:String){
+        lifecycle.addObserver(binding.youtubePlayerView)
+        binding.youtubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+            override fun onReady(youTubePlayer: YouTubePlayer) {
+                youTubePlayer.loadVideo(videoId, 0f)
+            }
+        })
+    }
+
     private fun setVisibility(isError: Boolean, isLoading: Boolean, isSuccess: Boolean) {
         binding.let {
             setVisibilityForLayout(isError, it.unavailableServer)
@@ -102,19 +109,15 @@ class MarsFragment : BaseFragment<FragmentMarsBinding>(FragmentMarsBinding::infl
 //                    it.included.bottomSheetDescription.setText(pictureOfTheDayAppState.serverResponse.explanation)
                     if (marsAppState.serverResponse.mediaType == "video") {
                         it.imageView.visibility = View.GONE
-                        it.videoView.visibility = View.VISIBLE
+                        it.youtubePlayerView.visibility = View.VISIBLE
 
 //                        val path = "android.resource://" + requireActivity().packageName + "/" + marsAppState.serverResponse.url
-                        val path = "https://youtu.be/7GgTvKNwbLo"
-                        val mc = MediaController(requireActivity())
-                        mc.setAnchorView(it.videoView)
-                        it.videoView.setVideoURI(Uri.parse(path))
-                        it.videoView.setMediaController(mc)
-                        it.videoView.requestFocus()
-                        it.videoView.start()
+                        val path = "https://www.youtube.com/embed/liapnqj9GDc?rel=0"
+                        showNasaVideo("7RXHscN6qA0")
+
                     } else {
                         it.imageView.visibility = View.VISIBLE
-                        it.videoView.visibility = View.GONE
+                        it.youtubePlayerView.visibility = View.GONE
                         it.imageView.load(marsAppState.serverResponse.url) {
                             placeholder(R.drawable.ic_no_photo_vector)
                         }

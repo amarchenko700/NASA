@@ -40,12 +40,6 @@
                 android:text="@string/text_today" />
         </com.google.android.material.chip.ChipGroup>
 
-        <VideoView
-            android:id="@+id/videoView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"/>
-
         <com.skysoft.nasa.utils.EquilateralImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
@@ -56,6 +50,14 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingClass"
             android:visibility="gone"/>
+        
+        <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+            android:id="@+id/youtubePlayerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:showFullScreenButton="true"/>
+
     </LinearLayout>
 
     <FrameLayout

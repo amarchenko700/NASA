@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.fragment.app.Fragment
 import com.google.android.material.chip.Chip
-import com.skysoft.nasa.R
 import com.skysoft.nasa.databinding.FragmentSettingsBinding
 import com.skysoft.nasa.utils.*
 

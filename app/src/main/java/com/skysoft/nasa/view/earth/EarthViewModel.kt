@@ -5,11 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.skysoft.nasa.BuildConfig
 import com.skysoft.nasa.R
-import com.skysoft.nasa.repository.*
+import com.skysoft.nasa.repository.EarthAPI
+import com.skysoft.nasa.repository.EarthResponse
+import com.skysoft.nasa.repository.PDOError
+import com.skysoft.nasa.repository.PDOErrorDetail400
 import com.skysoft.nasa.utils.App
 import com.skysoft.nasa.utils.hasInternet
 import com.skysoft.nasa.view.EarthAppState
-import com.skysoft.nasa.view.PictureOfTheDayAppState
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
